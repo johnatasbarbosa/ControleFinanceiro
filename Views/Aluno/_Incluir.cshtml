@@ -1,0 +1,118 @@
+﻿@model ControleFinanceiro.Models.Aluno
+
+@using (Html.BeginForm(ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["controller"].ToString(), FormMethod.Post, new { id = "formCrud" }))
+{
+    <div class="modal-header">
+        <h3 class="modal-title" id="myModalLabel">Novo Aluno</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    </div>
+
+    @Html.AntiForgeryToken()
+
+    <br />
+    <div class="form">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.Nome, new { @class = "form-control", @maxlength = 100 })
+            @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DataNascimento, htmlAttributes: new { @class = "control-label" })
+                    <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                        <!-- <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"/> -->
+                        @Html.TextBoxFor(model => model.DataNascimento, new { @class = "form-control",  data_toggle="datetimepicker", data_target="#DataNascimento" })
+                        <div class="input-group-append" data-target="#DataNascimento" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.DataNascimento, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DiaPagamento, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.DiaPagamento, new { @class = "form-control", @type="number", min = 1, max = 31 })
+                    @Html.ValidationMessageFor(model => model.DiaPagamento, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Peso, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.Peso, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Peso, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Braco, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.Braco, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Braco, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Abs, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.Abs, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Abs, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Gluteo, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.Gluteo, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Gluteo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Perna, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.Perna, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Perna, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IMC, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.IMC, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.IMC, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <input type="button" class="btn btn-default" data-dismiss="modal" value="Fechar">
+        <button type="button" id="btnSalvar" class="btn btn-primary">Salvar</button>
+    </div>
+}
+
+<script src="~/js/ConfigurarControlesPost.js"></script>
+<script type="text/javascript">
+    var rota = "@Url.Action("Incluir")";
+    var msgErro = 'Error';
+
+    $(document).ready(function () {
+        $('#myModal').on('shown.bs.modal', function () {
+            $('input:text:visible:first', this).focus();
+        });
+
+        $('#DataNascimento').datetimepicker({
+            viewMode: 'years',
+            format: 'L'
+        });
+    });
+</script>
