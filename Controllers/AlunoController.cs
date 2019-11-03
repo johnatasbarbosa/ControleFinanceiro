@@ -9,6 +9,7 @@ using ControleFinanceiro.Models;
 using ControleFinanceiro.Infra;
 using ControleFinanceiro.Services;
 using System.Net;
+using Newtonsoft.Json.Linq;
 
 namespace ControleFinanceiro.Controllers
 {
@@ -43,23 +44,157 @@ namespace ControleFinanceiro.Controllers
         [HttpGet]
         public ActionResult Incluir()
         {
+            ViewBag.Planos = servico.ObterPlanos();
             return PartialView("_Incluir");
         }
 
         [HttpPost]
-        public JsonResult Incluir(Aluno aluno)
+        public JsonResult Incluir(Ciclo ciclo)
         {
             var result = new ResultProcessing();
 
             if (ModelState.IsValid)
             {
-                result = servico.Salvar(aluno);
+                result = servico.Salvar(ciclo);
                 
                 if(result.Success)
                     return Json(new { success = result.Success, message = result.Message });                
             }
 
             return Json(new { success = false, message = "Error" });
+        }
+
+        [HttpGet]
+        public ActionResult Editar(int? id)
+        {
+            if (id == null)
+            {
+                return StatusCode(500);
+            }
+
+            var aluno = servico.ObterCicloPorAlunoId(id.Value);
+
+            if (aluno == null)
+            {
+                return StatusCode(404);
+            }
+
+            ViewBag.Planos = servico.ObterPlanos();
+            return PartialView("_Editar", aluno);
+        }
+
+        [HttpPost]
+        public JsonResult Editar(Ciclo ciclo)
+        {
+            if (ModelState.IsValid)
+            {
+                var resultado = servico.Salvar(ciclo);
+                if (resultado.Success)
+                {
+                    resultado.Message = "Editado com Sucesso";
+                }
+                return Json(new { success = resultado.Success, message = resultado.Message });
+            }
+
+            var mensagem = "";
+            foreach (var erro in ModelState.Values.SelectMany(item => item.Errors))
+            {
+                if (mensagem != "") mensagem += " / ";
+                mensagem += erro.ErrorMessage;
+            }
+
+            return Json(new { success = false, message = mensagem });
+        }
+
+        [HttpGet]
+        public ActionResult Visualizar(int? id)
+        {
+            if (id == null)
+            {
+                return StatusCode(500);
+            }
+
+            var data = servico.ObterPorId(id.Value);
+            if (data != null)
+            {
+                return PartialView("_Visualizar", data);
+            }
+            ViewBag.Titulo = "Falha ao abrir o registro";
+            ViewBag.Mensagem = "Registro não encontrado";
+            return PartialView("_ErroModal");
+        }
+
+        [HttpGet]
+        public ActionResult Ativar(int? id)
+        {
+            if (id == null)
+            {
+                return StatusCode(500);
+            }
+
+            var data = servico.ObterPorId(id.Value);
+            if (data != null)
+                return PartialView("_Ativar", data);
+            else
+            {
+                ViewBag.Titulo = "Falha ao abrir o registro";
+                ViewBag.Mensagem = "Registro não encontrado";
+            }
+            return PartialView("_ErroModal");
+        }
+
+        [HttpPost]
+        public JsonResult Ativar(Aluno aluno)
+        {
+            var result = new ResultProcessing();
+
+            result = servico.Ativar(aluno.Id);
+            if (result.Success)
+            {
+                    result.Message = "Editado com Sucesso";
+            }
+            else
+            {
+                result.Success = false;
+                result.Message = "Registro não encontrado";
+            }
+
+            return Json(new { success = result.Success, message = result.Message });
+        }
+
+        [HttpGet]
+        public ActionResult Pagamentos(int? id)
+        {
+            if (id == null)
+            {
+                return StatusCode(500);
+            }
+
+            var aluno = servico.ObterPorId(id.Value);
+            ViewBag.Ciclos = servico.ObterCiclosPorAlunoId(aluno.Id);
+            if (aluno != null)
+                return View("Pagamentos", aluno);
+            else
+            {
+                ViewBag.Titulo = "Falha ao abrir o registro";
+                ViewBag.Mensagem = "Registro não encontrado";
+            }
+            return PartialView("_ErroModal");
+        }
+
+        [HttpPost]
+        public JsonResult SalvarMes([FromBody]JObject body)
+        {
+            var result = new ResultProcessing();
+
+            var mes = new Mes(){
+                Id = body.GetValue("id").Value<int>(),
+                Pago = body.GetValue("pago").Value<bool>(),
+                Ativo = body.GetValue("ativo").Value<bool>()
+            };
+            result = servico.SalvarMes(mes);
+
+            return Json(new { success = result.Success, message = result.Message });
         }
 
     }

@@ -36,19 +36,64 @@ namespace ControleFinanceiro.Services
 
         public Aluno ObterPorId(int id)
         {
-            return contexto.Alunos.FirstOrDefault(a => a.Id == id);
-        }    
+            var aluno = contexto.Alunos.Include(x => x.Meses).Select(x => new Aluno(){
+                Id = x.Id,
+                Nome = x.Nome,
+                DiaPagamento = x.DiaPagamento,
+                Ativo = x.Ativo,
+                Meses = x.Meses.OrderBy(d => d.Data).ToList()
+            }).FirstOrDefault(a => a.Id == id);
+            // aluno.Meses = contexto.Meses
+            return aluno;
+        }
 
-        public ResultProcessing Excluir(int id)
+        public List<Ciclo> ObterCiclosPorAlunoId(int alunoId)
+        {
+            var ciclos = contexto.Ciclos.Where(a => a.Aluno.Id == alunoId).Select(x => 
+                new Ciclo(){
+                    Id = x.Id,
+                    Plano = x.Plano,
+                    DataInicio = x.DataInicio,
+                    DataFinal = x.DataFinal,
+                    Professor = x.Professor,
+                    ValorPromocional = x.ValorPromocional
+                }
+            ).ToList();
+            return ciclos;
+        }
+
+        public Ciclo ObterCicloPorAlunoId(int alunoId)
+        {
+            return contexto.Ciclos.Include(x => x.Aluno).FirstOrDefault(a => a.Aluno.Id == alunoId && a.DataFinal == null);
+        }
+
+        public List<Plano> ObterPlanos()
+        {
+            return contexto.Planos.ToList();
+        }
+
+        public ResultProcessing SalvarMes(Mes mes)
         {
             var result = new ResultProcessing();
 
             try
             {
-                var aluno = ObterPorId(id);
-                contexto.Alunos.Remove(aluno);
+                var mesDB = contexto.Meses.FirstOrDefault(x => x.Id == mes.Id);
+                if(mesDB.Pago == false && mes.Pago){
+                    mesDB.DiaPagamento = DateTime.Now;
+                }
+                if(mesDB.Pago && mes.Pago == false){
+                    mesDB.DiaPagamento = null;
+                }
+                mesDB.Pago = mes.Pago;
+                if(mesDB.Ativo && mes.Ativo == false){
+                    mesDB.DiaPagamento = null;
+                    mesDB.Pago = false;
+                }
+                mesDB.Ativo = mes.Ativo;
+                contexto.Entry(mesDB).State = EntityState.Modified;
                 result.Success = true;
-                result.Message = "Excluido com Sucesso";
+                result.Message = "Salvo com Sucesso";
                 contexto.SaveChanges();
             }
             catch(Exception e)
@@ -60,19 +105,49 @@ namespace ControleFinanceiro.Services
             return result;
         }
 
-        public ResultProcessing Salvar(Aluno aluno)
+        public ResultProcessing Salvar(Ciclo ciclo)
         {
             var result = new ResultProcessing();
 
             try
             {
-                if (aluno.Id == 0)
+                if (ciclo.Id == 0)
                 {
-                    contexto.Alunos.Add(aluno);
+                    // var ciclo = new Ciclo();
+                    // ciclo.Plano = contexto.Planos.FirstOrDefault(x => x.Id == aluno.PlanoId);
+                    ciclo.Professor = contexto.Professores.FirstOrDefault();
+                    var planoSelecionado = contexto.Planos.FirstOrDefault(x => x.Id == ciclo.PlanoId);
+                    if(ciclo.ValorPromocional == planoSelecionado.Valor){
+                        ciclo.ValorPromocional = null;
+                    }
+                    contexto.Ciclos.Add(ciclo);
+                    contexto.SaveChanges();
+                    // contexto.Alunos.Add(aluno);
+
+                    var mes = new Mes();
+                    mes.Data = new DateTime(DateTime.Now.Year, DateTime.Now.Month, ciclo.Aluno.DiaPagamento);
+                    mes.CicloId = ciclo.Id;
+                    mes.AlunoId = ciclo.AlunoId;
+                    contexto.Meses.Add(mes);
                 }
                 else
                 {
-                    contexto.Entry(aluno).State = EntityState.Modified;
+                    var cicloDB = ObterCicloPorAlunoId(ciclo.Aluno.Id);
+                    cicloDB.PlanoId = ciclo.PlanoId;
+                    cicloDB.ValorPromocional = ciclo.ValorPromocional;
+                    
+                    cicloDB.Aluno.Nome = ciclo.Aluno.Nome;
+                    cicloDB.Aluno.DataNascimento = ciclo.Aluno.DataNascimento;
+                    cicloDB.Aluno.Telefone = ciclo.Aluno.Telefone;
+                    cicloDB.Aluno.DiaPagamento = ciclo.Aluno.DiaPagamento;
+                    cicloDB.Aluno.Peso = ciclo.Aluno.Peso;
+                    cicloDB.Aluno.Braco = ciclo.Aluno.Braco;
+                    cicloDB.Aluno.Abs = ciclo.Aluno.Abs;
+                    cicloDB.Aluno.Gluteo = ciclo.Aluno.Gluteo;
+                    cicloDB.Aluno.Perna = ciclo.Aluno.Perna;
+                    cicloDB.Aluno.IMC = ciclo.Aluno.IMC;
+
+                    contexto.Entry(cicloDB).State = EntityState.Modified;
                 }
                 result.Success = true;
                 result.Message = "Salvo com Sucesso";
@@ -86,6 +161,31 @@ namespace ControleFinanceiro.Services
             return result;
         }
 
+        public ResultProcessing Ativar(int id)
+        {
+            var result = new ResultProcessing { Success = true };
+            try
+            {
+                var tagControle = contexto.Alunos.FirstOrDefault(a => a.Id == id);
+
+                if (tagControle.Ativo == true)
+                {
+                    tagControle.Ativo = false;
+                }
+                else
+                {
+                    tagControle.Ativo = true;
+                }
+                contexto.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                result.Success = false;
+                result.Message = e.Message;
+            }
+            return result;
+        }
+        
         /// <summary>
         /// Filtra e ordena os dados 
         /// </summary>

@@ -14,6 +14,7 @@ namespace ControleFinanceiro.Models
         {
             DiaPagamento = null;
             Pago = false;
+            Ativo = true;
         }
 
         public int Id { get; set; }
@@ -28,5 +29,6 @@ namespace ControleFinanceiro.Models
         public int AlunoId { get; set; }
         public Aluno Aluno { get; set; }
         public int CicloId { get; set; }
+        // public Ciclo Ciclo { get; set; }
     }
 }

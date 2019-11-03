@@ -4,14 +4,16 @@ using ControleFinanceiro;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ControleFinanceiro.Migrations
 {
     [DbContext(typeof(ControleFinanceiroContexto))]
-    partial class ControleFinanceiroContextoModelSnapshot : ModelSnapshot
+    [Migration("20191101220026_Mudancas_Required_Aluno")]
+    partial class Mudancas_Required_Aluno
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,14 +83,14 @@ namespace ControleFinanceiro.Migrations
                     b.Property<DateTime>("DataInicio")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PlanoId")
+                    b.Property<int?>("PlanoId")
                         .HasColumnType("int");
 
                     b.Property<int?>("ProfessorId")
                         .HasColumnType("int");
 
-                    b.Property<double?>("ValorPromocional")
-                        .HasColumnType("float");
+                    b.Property<float?>("ValorPromocional")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
@@ -129,8 +131,6 @@ namespace ControleFinanceiro.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AlunoId");
-
-                    b.HasIndex("CicloId");
 
                     b.ToTable("Meses");
                 });
@@ -208,9 +208,7 @@ namespace ControleFinanceiro.Migrations
 
                     b.HasOne("ControleFinanceiro.Models.Plano", "Plano")
                         .WithMany()
-                        .HasForeignKey("PlanoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PlanoId");
 
                     b.HasOne("ControleFinanceiro.Models.Professor", "Professor")
                         .WithMany()
@@ -219,15 +217,9 @@ namespace ControleFinanceiro.Migrations
 
             modelBuilder.Entity("ControleFinanceiro.Models.Mes", b =>
                 {
-                    b.HasOne("ControleFinanceiro.Models.Aluno", null)
+                    b.HasOne("ControleFinanceiro.Models.Aluno", "Aluno")
                         .WithMany("Meses")
                         .HasForeignKey("AlunoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ControleFinanceiro.Models.Ciclo", "Ciclo")
-                        .WithMany()
-                        .HasForeignKey("CicloId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

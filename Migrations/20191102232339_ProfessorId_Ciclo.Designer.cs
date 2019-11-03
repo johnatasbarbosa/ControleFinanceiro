@@ -4,14 +4,16 @@ using ControleFinanceiro;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ControleFinanceiro.Migrations
 {
     [DbContext(typeof(ControleFinanceiroContexto))]
-    partial class ControleFinanceiroContextoModelSnapshot : ModelSnapshot
+    [Migration("20191102232339_ProfessorId_Ciclo")]
+    partial class ProfessorId_Ciclo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -130,8 +132,6 @@ namespace ControleFinanceiro.Migrations
 
                     b.HasIndex("AlunoId");
 
-                    b.HasIndex("CicloId");
-
                     b.ToTable("Meses");
                 });
 
@@ -219,15 +219,9 @@ namespace ControleFinanceiro.Migrations
 
             modelBuilder.Entity("ControleFinanceiro.Models.Mes", b =>
                 {
-                    b.HasOne("ControleFinanceiro.Models.Aluno", null)
+                    b.HasOne("ControleFinanceiro.Models.Aluno", "Aluno")
                         .WithMany("Meses")
                         .HasForeignKey("AlunoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ControleFinanceiro.Models.Ciclo", "Ciclo")
-                        .WithMany()
-                        .HasForeignKey("CicloId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

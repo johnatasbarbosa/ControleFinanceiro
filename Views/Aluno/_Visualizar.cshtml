@@ -1,0 +1,101 @@
+﻿@model ControleFinanceiro.Models.Aluno
+
+
+@using (Html.BeginForm(ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["controller"].ToString(), FormMethod.Post, new { id = "formCrud" }))
+{
+    <div class="modal-header">
+        <h3 class="modal-title" id="myModalLabel">@Model.Nome</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    </div>
+
+    @Html.AntiForgeryToken()
+
+    <br />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DiaPagamento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiaPagamento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DataNascimento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DataNascimento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DataNascimento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DataNascimento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Telefone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Telefone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Peso)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Peso)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Braco)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Braco)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Abs)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Abs)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Gluteo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Gluteo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Perna)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Perna)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IMC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IMC)
+        </dd>
+    </dl>
+
+    <br />
+
+    <div class="modal-footer">
+        <input type="button" class="btn btn-default" data-dismiss="modal" value="Fechar">
+    </div>
+}

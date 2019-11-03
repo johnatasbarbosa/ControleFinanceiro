@@ -3,7 +3,7 @@
 @using (Html.BeginForm(ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["controller"].ToString(), FormMethod.Post, new { id = "formCrud" }))
 {
     <div class="modal-header">
-        <h3 class="modal-title" id="myModalLabel">Novo Aluno</h3>
+        <h3 class="modal-title" id="myModalLabel">Editar Aluno</h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     </div>
 
@@ -12,6 +12,8 @@
     <br />
     <div class="form">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Aluno.Id)
 
         <div class="row">
             <div class="col-sm-12">
@@ -28,6 +30,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Aluno.DataNascimento, htmlAttributes: new { @class = "control-label" })
                     <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                        <!-- <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"/> -->
                         @Html.TextBoxFor(model => model.Aluno.DataNascimento, new { @class = "form-control",  data_toggle="datetimepicker", data_target="#Aluno_DataNascimento" })
                         <div class="input-group-append" data-target="#Aluno_DataNascimento" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -133,7 +136,7 @@
 
 <script src="~/js/ConfigurarControlesPost.js"></script>
 <script type="text/javascript">
-    var rota = "@Url.Action("Incluir")";
+    var rota = "@Url.Action("Editar")";
     var msgErro = 'Error';
 
     var planos = JSON.parse('@Json.Serialize(@ViewBag.Planos)');

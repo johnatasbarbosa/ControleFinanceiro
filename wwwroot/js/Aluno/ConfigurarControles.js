@@ -36,24 +36,24 @@
         //     },
         formatters: {
             "commands": function (column, row) {
-                // console.log(row);
-                return "<button type='button' title='" + "Editar" + "' class='btn btn-sm btn-default command-edit' href='javascript:void(0)' data-row-id='" + row.Id + "'><span class='fa fa-edit'></span></button>&nbsp" +
-                    "<button type='button' title='" + "Visualizar" + "' class='btn btn-sm btn-danger command-encerrar' href='javascript:void(0)' data-row-id='" + row.Id + "'><span class='fa fa-user-times'></span></button>";
+                return "<button type='button' title='" + "Visualizar" + "' class='btn btn-sm btn-default command-visualizar' href='javascript:void(0)' data-row-id='" + row.id + "'><span class='fa fa-search'></span></button>" +
+                      "<button type='button' title='" + "Editar" + "' class='btn btn-sm btn-default command-edit' href='javascript:void(0)' data-row-id='" + row.id + "'><span class='fa fa-edit'></span></button>" +
+                      "<button type='button' title='" + "Pagamentos" + "' class='btn btn-sm btn-default command-payment' href='javascript:void(0)' data-row-id='" + row.id + "'><span class='fa fa-search'></span></button>";
             },
             "primeiroMes": function (column, row) {
-                if (row.Ativo) {
-                    return "<input type='checkbox' data-row-id=\"" + row.Id + "\" class='command-ativo' checked>"
+                if (row.ativo) {
+                    return "<input type='checkbox' data-row-id=\"" + row.id + "\" class='command-ativo' checked>"
                 }
                 else {
-                    return "<input type='checkbox' data-row-id=\"" + row.Id + "\" class='command-ativo'>"
+                    return "<input type='checkbox' data-row-id=\"" + row.id + "\" class='command-ativo'>"
                 }
             },
             "checkbox": function (column, row) {
-                if (row.Ativo) {
-                    return "<input type='checkbox' data-row-id=\"" + row.Id + "\" class='command-ativo' checked>"
+                if (row.ativo) {
+                    return "<input type='checkbox' data-row-id=\"" + row.id + "\" class='command-ativo' checked>"
                 }
                 else {
-                    return "<input type='checkbox' data-row-id=\"" + row.Id + "\" class='command-ativo'>"
+                    return "<input type='checkbox' data-row-id=\"" + row.id + "\" class='command-ativo'>"
                 }
             }
         }
@@ -62,11 +62,11 @@
         /* Executes after data is loaded and rendered */
         grid.find(".command-edit").on("click", function (e) {
             var id = $(this).data("row-id");            
-            var url = urlEditar + "/{id}";
-            
+            var url = urlEditar + "/{id}";            
 
             url = url.replace("{id}", id);
 
+            console.log(url);
             $("#abreModal").load(url);
             $('#myModal').modal('show');
         }).end().find(".command-visualizar").on("click", function (e) {
@@ -77,14 +77,22 @@
 
             $("#abreModal").load(url);
             $('#myModal').modal('show');
-        }).end().find(".command-encerrar").on("click", function (e) {
+        }).end().find(".command-ativo").change(function (e) {
             var id = $(this).data("row-id");
-            var url = urlEncerrar + "/{id}";
+            var url = urlAtivar + "/{id}";
 
             url = url.replace("{id}", id);
 
             $("#abreModal").load(url);
             $('#myModal').modal('show');
-        });
+            $(this).prop('checked', false); // Unchecks it
+        }).end().find(".command-payment").on("click", function (e) {
+            var id = $(this).data("row-id");
+            var url = urlPagamentos + "/{id}";
+
+            url = url.replace("{id}", id);
+            console.log(url);
+            window.location.href = url;
+        })
     });
 }

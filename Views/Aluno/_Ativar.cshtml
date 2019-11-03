@@ -1,0 +1,50 @@
+﻿@model ControleFinanceiro.Models.Aluno
+
+
+@using (Html.BeginForm())
+{
+    <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">@(Model.Ativo ? "Desativar Aluno?" : "Ativar Aluno?")</h4>
+        <button type="button" class="close OnClickReload" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    </div>
+
+    @Html.AntiForgeryToken()
+
+    <div>
+        <br />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Nome)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Nome)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Ativo)
+            </dt>
+
+            <dd>
+                @Html.DisplayName(Model.Ativo ? "Sim" : "Não")
+            </dd>
+
+        </dl>
+    </div>
+
+    <div class="modal-footer">
+        <input type="button" class="btn btn-default OnClickReload" data-dismiss="modal" value="Fechar">
+        @if(Model.Ativo){
+            <button type="button" id="btnAtivar" class="btn btn-danger">Desativar</button>
+        }
+        else{
+            <button type="button" id="btnAtivar" class="btn btn-success">Ativar</button>
+        }
+    </div>
+}
+
+<script src="~/js/ConfigurarControlesPost.js"></script>
+<script type="text/javascript">
+    var rota = "@Url.Action("Ativar")";
+    var msgErro = 'Error';
+</script>
