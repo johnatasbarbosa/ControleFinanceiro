@@ -22,15 +22,15 @@ namespace ControleFinanceiro.Services
         public void GerarMeses(){
             var now = DateTime.Now;
             var alunos = contexto.Alunos.Where(x => x.Meses.Any(m => m.Data.Month == now.Month && m.Data.Year == now.Year) == false);
-            foreach(var aluno in alunos){
-                var lastCiclo = contexto.Ciclos.FirstOrDefault(x => x.AlunoId == aluno.Id && x.DataFinal == null);
-                var mes = new Mes();
-                mes.AlunoId = aluno.Id;
-                mes.Ativo = aluno.Ativo;
-                mes.Data = new DateTime(now.Year, now.Month, aluno.DiaPagamento);
-                mes.CicloId = lastCiclo == null ? 0 : lastCiclo.Id;
-                contexto.Meses.Add(mes);
-            }
+            // foreach(var aluno in alunos){
+            //     var lastCiclo = contexto.Ciclos.FirstOrDefault(x => x.AlunoId == aluno.Id && x.DataFinal == null);
+            //     var mes = new Mes();
+            //     mes.AlunoId = aluno.Id;
+            //     mes.Ativo = aluno.Ativo;
+            //     mes.Data = new DateTime(now.Year, now.Month, aluno.DiaPagamento);
+            //     mes.CicloId = lastCiclo == null ? 0 : lastCiclo.Id;
+            //     contexto.Meses.Add(mes);
+            // }
             contexto.SaveChanges();
         }
 
@@ -47,24 +47,34 @@ namespace ControleFinanceiro.Services
             return aluno;
         }
 
-        public List<Ciclo> ObterCiclosPorAlunoId(int alunoId)
+        public Aluno ObterPorIdParaEditar(int id)
         {
-            var ciclos = contexto.Ciclos.Where(a => a.Aluno.Id == alunoId).Select(x => 
-                new Ciclo(){
-                    Id = x.Id,
-                    Plano = x.Plano,
-                    DataInicio = x.DataInicio,
-                    DataFinal = x.DataFinal,
-                    Professor = x.Professor,
-                    ValorPromocional = x.ValorPromocional
-                }
-            ).ToList();
-            return ciclos;
+            return contexto.Alunos.Include(x => x.Ciclo).FirstOrDefault(x => x.Id == id);
         }
+
+        public Mes ObterMesPorId(int id)
+        {
+            return contexto.Meses.Include(x => x.Aluno).FirstOrDefault(x => x.Id == id);
+        }
+
+        // public List<Ciclo> ObterCiclosPorAlunoId(int alunoId)
+        // {
+        //     var ciclos = contexto.Ciclos.Where(a => a.Aluno.Id == alunoId).Select(x => 
+        //         new Ciclo(){
+        //             Id = x.Id,
+        //             Plano = x.Plano,
+        //             DataInicio = x.DataInicio,
+        //             DataFinal = x.DataFinal,
+        //             Professor = x.Professor,
+        //             ValorPromocional = x.ValorPromocional
+        //         }
+        //     ).ToList();
+        //     return ciclos;
+        // }
 
         public Ciclo ObterCicloPorAlunoId(int alunoId)
         {
-            return contexto.Ciclos.Include(x => x.Aluno).FirstOrDefault(a => a.Aluno.Id == alunoId && a.DataFinal == null);
+            return contexto.Alunos.Include(x => x.Ciclo).Select(x => x.Ciclo).FirstOrDefault(a => a.Id == alunoId);
         }
 
         public List<Plano> ObterPlanos()
@@ -105,49 +115,53 @@ namespace ControleFinanceiro.Services
             return result;
         }
 
-        public ResultProcessing Salvar(Ciclo ciclo)
+        public ResultProcessing Salvar(Aluno aluno)
         {
             var result = new ResultProcessing();
 
             try
             {
-                if (ciclo.Id == 0)
+                if (aluno.Id == 0)
                 {
                     // var ciclo = new Ciclo();
                     // ciclo.Plano = contexto.Planos.FirstOrDefault(x => x.Id == aluno.PlanoId);
-                    ciclo.Professor = contexto.Professores.FirstOrDefault();
-                    var planoSelecionado = contexto.Planos.FirstOrDefault(x => x.Id == ciclo.PlanoId);
-                    if(ciclo.ValorPromocional == planoSelecionado.Valor){
-                        ciclo.ValorPromocional = null;
+                    aluno.Ciclo.Professor = contexto.Professores.FirstOrDefault();
+                    var planoSelecionado = contexto.Planos.FirstOrDefault(x => x.Id == aluno.Ciclo.PlanoId);
+                    if(aluno.Ciclo.ValorPromocional == planoSelecionado.Valor){
+                        aluno.Ciclo.ValorPromocional = null;
                     }
-                    contexto.Ciclos.Add(ciclo);
+                    contexto.Alunos.Add(aluno);
                     contexto.SaveChanges();
                     // contexto.Alunos.Add(aluno);
 
                     var mes = new Mes();
-                    mes.Data = new DateTime(DateTime.Now.Year, DateTime.Now.Month, ciclo.Aluno.DiaPagamento);
-                    mes.CicloId = ciclo.Id;
-                    mes.AlunoId = ciclo.AlunoId;
+                    mes.Data = new DateTime(DateTime.Now.Year, DateTime.Now.Month, aluno.DiaPagamento);
+                    mes.AlunoId = aluno.Id;
+                    mes.Ciclo = new Ciclo(){
+                        PlanoId = aluno.Ciclo.PlanoId,
+                        ProfessorId = aluno.Ciclo.ProfessorId,
+                        ValorPromocional = aluno.Ciclo.ValorPromocional
+                    };
                     contexto.Meses.Add(mes);
                 }
                 else
                 {
-                    var cicloDB = ObterCicloPorAlunoId(ciclo.Aluno.Id);
-                    cicloDB.PlanoId = ciclo.PlanoId;
-                    cicloDB.ValorPromocional = ciclo.ValorPromocional;
+                    var alunoDB = ObterPorIdParaEditar(aluno.Id);
+                    alunoDB.Ciclo.PlanoId = aluno.Ciclo.PlanoId;
+                    alunoDB.Ciclo.ValorPromocional = aluno.Ciclo.ValorPromocional;
                     
-                    cicloDB.Aluno.Nome = ciclo.Aluno.Nome;
-                    cicloDB.Aluno.DataNascimento = ciclo.Aluno.DataNascimento;
-                    cicloDB.Aluno.Telefone = ciclo.Aluno.Telefone;
-                    cicloDB.Aluno.DiaPagamento = ciclo.Aluno.DiaPagamento;
-                    cicloDB.Aluno.Peso = ciclo.Aluno.Peso;
-                    cicloDB.Aluno.Braco = ciclo.Aluno.Braco;
-                    cicloDB.Aluno.Abs = ciclo.Aluno.Abs;
-                    cicloDB.Aluno.Gluteo = ciclo.Aluno.Gluteo;
-                    cicloDB.Aluno.Perna = ciclo.Aluno.Perna;
-                    cicloDB.Aluno.IMC = ciclo.Aluno.IMC;
+                    alunoDB.Nome = aluno.Nome;
+                    alunoDB.DataNascimento = aluno.DataNascimento;
+                    alunoDB.Telefone = aluno.Telefone;
+                    alunoDB.DiaPagamento = aluno.DiaPagamento;
+                    alunoDB.Peso = aluno.Peso;
+                    alunoDB.Braco = aluno.Braco;
+                    alunoDB.Abs = aluno.Abs;
+                    alunoDB.Gluteo = aluno.Gluteo;
+                    alunoDB.Perna = aluno.Perna;
+                    alunoDB.IMC = aluno.IMC;
 
-                    contexto.Entry(cicloDB).State = EntityState.Modified;
+                    contexto.Entry(alunoDB).State = EntityState.Modified;
                 }
                 result.Success = true;
                 result.Message = "Salvo com Sucesso";
@@ -166,15 +180,40 @@ namespace ControleFinanceiro.Services
             var result = new ResultProcessing { Success = true };
             try
             {
-                var tagControle = contexto.Alunos.FirstOrDefault(a => a.Id == id);
+                var aluno = contexto.Alunos.FirstOrDefault(a => a.Id == id);
 
-                if (tagControle.Ativo == true)
+                if (aluno.Ativo == true)
                 {
-                    tagControle.Ativo = false;
+                    aluno.Ativo = false;
                 }
                 else
                 {
-                    tagControle.Ativo = true;
+                    aluno.Ativo = true;
+                }
+                contexto.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                result.Success = false;
+                result.Message = e.Message;
+            }
+            return result;
+        }
+        
+        public ResultProcessing Pagar(int id)
+        {
+            var result = new ResultProcessing { Success = true };
+            try
+            {
+                var mes = contexto.Meses.FirstOrDefault(a => a.Id == id);
+
+                if (mes.Pago == true)
+                {
+                    mes.Pago = false;
+                }
+                else
+                {
+                    mes.Pago = true;
                 }
                 contexto.SaveChanges();
             }
@@ -202,7 +241,7 @@ namespace ControleFinanceiro.Services
             int registroInicial = (pagina - 1) * qtdLinhas;
             campoOrdenacao += tipoOrdenacao.ToUpper().Equals("DESC") ? " DESCENDING" : "";
             
-            var dadosFiltrados = contexto.Alunos.Where(a =>
+            var dadosFiltrados = contexto.Alunos.Include(x => x.Meses).Where(a =>
                 (busca == null ||
                 a.Nome.ToUpper().Contains(busca.ToUpper()))
             );

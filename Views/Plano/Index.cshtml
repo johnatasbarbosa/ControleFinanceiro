@@ -4,12 +4,12 @@
 
 @section header{
     <div class="col-sm-6">
-        <h1 class="m-0 text-dark">Alunos</h1>
+        <h1 class="m-0 text-dark">Planos</h1>
     </div><!-- /.col -->
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Alunos</li>
+            <li class="breadcrumb-item active">Planos</li>
         </ol>
     </div><!-- /.col -->
 }
@@ -26,11 +26,8 @@
                     <table id="grid-data" class="table table-bordered table-condensed table-hover table-striped">
                         <thead>
                             <tr>
-                                <th data-column-id="nome">Nome</th>
-                                <th data-column-id="" data-formatter="primeiroMes">@ViewBag.PrimeiroMes</th>
-                                <th data-column-id="" data-formatter="segundoMes">@ViewBag.segundoMes</th>
-                                <th data-column-id="" data-formatter="terceiroMes">@ViewBag.TerceiroMes</th>
-                                <th data-column-id="ativo" data-formatter="checkbox">Ativo</th>
+                                <th data-column-id="quantidadeDias">Quantidade de dias</th>
+                                <th data-column-id="valor">Valor</th>
                                 <th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="15%">Ações</th>
                             </tr>
                         </thead>
@@ -43,16 +40,12 @@
 
 @section Scripts{
     <script src="~/js/AbrirModalNovo.js"></script>
-    <script src="~/js/Aluno/ConfigurarControles.js"></script>
+    <script src="~/js/Plano/ConfigurarControles.js"></script>
 
     <script type="text/javascript">
         var rotaListar = "@Url.Action("Listar")";
         var urlIncluir = "@Url.Action("Incluir")";
-        var urlEditar = "@Url.Action("Editar")";
-        var urlVisualizar = "@Url.Action("Visualizar")";
-        var urlAtivar = "@Url.Action("Ativar")";
-        var urlPagar = "@Url.Action("Pagar")";
-        var urlPagamentos = "@Url.Action("Pagamentos")";
+        var urlEditar = "@Url.Action("Editar")"
         
         $(document).ready(configurarControles);
         $("#grid-basic").bootgrid();

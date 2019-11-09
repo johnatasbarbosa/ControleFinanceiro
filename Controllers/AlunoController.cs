@@ -49,13 +49,13 @@ namespace ControleFinanceiro.Controllers
         }
 
         [HttpPost]
-        public JsonResult Incluir(Ciclo ciclo)
+        public JsonResult Incluir(Aluno aluno)
         {
             var result = new ResultProcessing();
 
             if (ModelState.IsValid)
             {
-                result = servico.Salvar(ciclo);
+                result = servico.Salvar(aluno);
                 
                 if(result.Success)
                     return Json(new { success = result.Success, message = result.Message });                
@@ -72,7 +72,7 @@ namespace ControleFinanceiro.Controllers
                 return StatusCode(500);
             }
 
-            var aluno = servico.ObterCicloPorAlunoId(id.Value);
+            var aluno = servico.ObterPorIdParaEditar(id.Value);
 
             if (aluno == null)
             {
@@ -84,11 +84,11 @@ namespace ControleFinanceiro.Controllers
         }
 
         [HttpPost]
-        public JsonResult Editar(Ciclo ciclo)
+        public JsonResult Editar(Aluno aluno)
         {
             if (ModelState.IsValid)
             {
-                var resultado = servico.Salvar(ciclo);
+                var resultado = servico.Salvar(aluno);
                 if (resultado.Success)
                 {
                     resultado.Message = "Editado com Sucesso";
@@ -114,7 +114,7 @@ namespace ControleFinanceiro.Controllers
                 return StatusCode(500);
             }
 
-            var data = servico.ObterPorId(id.Value);
+            var data = servico.ObterPorIdParaEditar(id.Value);
             if (data != null)
             {
                 return PartialView("_Visualizar", data);
@@ -132,7 +132,7 @@ namespace ControleFinanceiro.Controllers
                 return StatusCode(500);
             }
 
-            var data = servico.ObterPorId(id.Value);
+            var data = servico.ObterPorIdParaEditar(id.Value);
             if (data != null)
                 return PartialView("_Ativar", data);
             else
@@ -163,6 +163,44 @@ namespace ControleFinanceiro.Controllers
         }
 
         [HttpGet]
+        public ActionResult Pagar(int? id)
+        {
+            if (id == null)
+            {
+                return StatusCode(500);
+            }
+
+            var data = servico.ObterMesPorId(id.Value);
+            if (data != null)
+                return PartialView("_Pagar", data);
+            else
+            {
+                ViewBag.Titulo = "Falha ao abrir o registro";
+                ViewBag.Mensagem = "Registro não encontrado";
+            }
+            return PartialView("_ErroModal");
+        }
+
+        [HttpPost]
+        public JsonResult Pagar(Mes mes)
+        {
+            var result = new ResultProcessing();
+
+            result = servico.Pagar(mes.Id);
+            if (result.Success)
+            {
+                    result.Message = "Editado com Sucesso";
+            }
+            else
+            {
+                result.Success = false;
+                result.Message = "Registro não encontrado";
+            }
+
+            return Json(new { success = result.Success, message = result.Message });
+        }
+
+        [HttpGet]
         public ActionResult Pagamentos(int? id)
         {
             if (id == null)
@@ -171,7 +209,7 @@ namespace ControleFinanceiro.Controllers
             }
 
             var aluno = servico.ObterPorId(id.Value);
-            ViewBag.Ciclos = servico.ObterCiclosPorAlunoId(aluno.Id);
+            // ViewBag.Ciclos = servico.ObterCiclosPorAlunoId(aluno.Id);
             if (aluno != null)
                 return View("Pagamentos", aluno);
             else

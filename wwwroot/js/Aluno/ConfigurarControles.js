@@ -41,11 +41,37 @@
                       "<button type='button' title='" + "Pagamentos" + "' class='btn btn-sm btn-default command-payment' href='javascript:void(0)' data-row-id='" + row.id + "'><span class='fa fa-search'></span></button>";
             },
             "primeiroMes": function (column, row) {
-                if (row.ativo) {
-                    return "<input type='checkbox' data-row-id=\"" + row.id + "\" class='command-ativo' checked>"
+                console.log(row);
+                var now = new Date();
+                if (row.meses.length >= 3 && row.meses[2].ativo) {
+                    if(row.meses[2].pago)
+                        return "<input type='checkbox' data-row-id=\"" + row.meses[2].id + "\" class='command-pago' checked>"
+                    return "<input type='checkbox' data-row-id=\"" + row.meses[2].id + "\" class='command-pago'>"
                 }
                 else {
-                    return "<input type='checkbox' data-row-id=\"" + row.id + "\" class='command-ativo'>"
+                    return "<input type='checkbox' data-row-id=\"" + row.id + "\" disabled>"
+                }
+            },
+            "segundoMes": function (column, row) {
+                var now = new Date();
+                if (row.meses.length >= 2 && row.meses[1].ativo) {
+                    if(row.meses[1].pago)
+                        return "<input type='checkbox' data-row-id=\"" + row.meses[1].id + "\" class='command-pago' checked>"
+                    return "<input type='checkbox' data-row-id=\"" + row.meses[1].id + "\" class='command-pago'>"
+                }
+                else {
+                    return "<input type='checkbox' data-row-id=\"" + row.id + "\" disabled>"
+                }
+            },
+            "terceiroMes": function (column, row) {
+                var now = new Date();
+                if (row.meses.length >= 1 && row.meses[0].ativo) {
+                    if(row.meses[0].pago)
+                        return "<input type='checkbox' data-row-id=\"" + row.meses[0].id + "\" class='command-pago' checked>"
+                    return "<input type='checkbox' data-row-id=\"" + row.meses[0].id + "\" class='command-pago'>"
+                }
+                else {
+                    return "<input type='checkbox' data-row-id=\"" + row.id + "\" disabled>"
                 }
             },
             "checkbox": function (column, row) {
@@ -80,6 +106,15 @@
         }).end().find(".command-ativo").change(function (e) {
             var id = $(this).data("row-id");
             var url = urlAtivar + "/{id}";
+
+            url = url.replace("{id}", id);
+
+            $("#abreModal").load(url);
+            $('#myModal').modal('show');
+            $(this).prop('checked', false); // Unchecks it
+        }).end().find(".command-pago").change(function (e) {
+            var id = $(this).data("row-id");
+            var url = urlPagar + "/{id}";
 
             url = url.replace("{id}", id);
 

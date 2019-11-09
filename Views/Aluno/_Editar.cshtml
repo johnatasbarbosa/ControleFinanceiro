@@ -1,4 +1,4 @@
-﻿@model ControleFinanceiro.Models.Ciclo
+﻿@model ControleFinanceiro.Models.Aluno
 
 @using (Html.BeginForm(ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["controller"].ToString(), FormMethod.Post, new { id = "formCrud" }))
 {
@@ -13,14 +13,13 @@
     <div class="form">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.Aluno.Id)
 
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Aluno.Nome, htmlAttributes: new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.Aluno.Nome, new { @class = "form-control", @maxlength = 100 })
-                    @Html.ValidationMessageFor(model => model.Aluno.Nome, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.Nome, new { @class = "form-control", @maxlength = 100 })
+                    @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
@@ -28,22 +27,22 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Aluno.DataNascimento, htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.DataNascimento, htmlAttributes: new { @class = "control-label" })
                     <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
                         <!-- <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"/> -->
-                        @Html.TextBoxFor(model => model.Aluno.DataNascimento, new { @class = "form-control",  data_toggle="datetimepicker", data_target="#Aluno_DataNascimento" })
-                        <div class="input-group-append" data-target="#Aluno_DataNascimento" data-toggle="datetimepicker">
+                        @Html.TextBoxFor(model => model.DataNascimento, new { @class = "form-control",  data_toggle="datetimepicker", data_target="#DataNascimento" })
+                        <div class="input-group-append" data-target="#DataNascimento" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
                     </div>
-                    @Html.ValidationMessageFor(model => model.Aluno.DataNascimento, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.DataNascimento, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Aluno.Telefone, htmlAttributes: new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.Aluno.Telefone, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Aluno.Telefone, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.Telefone, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.Telefone, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Telefone, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
@@ -51,54 +50,30 @@
         <div class="row">
             <div class="col-sm-4">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.PlanoId, htmlAttributes: new { @class = "control-label" })    
+                    @Html.LabelFor(model => model.Ciclo.PlanoId, htmlAttributes: new { @class = "control-label" })    
                     <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                    @Html.DropDownListFor(model => model.PlanoId, new SelectList(ViewBag.Planos, "Id", "QuantidadeDias"), new {@class = "form-control"})
+                    @Html.DropDownListFor(model => model.Ciclo.PlanoId, new SelectList(ViewBag.Planos, "Id", "QuantidadeDias"), new {@class = "form-control"})
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span id="valor"></span>
                             </div>
                         </div>
                     </div>                
-                    @Html.ValidationMessageFor(model => model.PlanoId, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.Ciclo.PlanoId, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.ValorPromocional, htmlAttributes: new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.ValorPromocional, new { @class = "form-control", @type="number", min = 1, max = 31 })
-                    @Html.ValidationMessageFor(model => model.ValorPromocional, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.Ciclo.ValorPromocional, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.Ciclo.ValorPromocional, new { @class = "form-control", @type="number", min = 1, max = 31 })
+                    @Html.ValidationMessageFor(model => model.Ciclo.ValorPromocional, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Aluno.DiaPagamento, htmlAttributes: new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.Aluno.DiaPagamento, new { @class = "form-control", @type="number", min = 1, max = 31 })
-                    @Html.ValidationMessageFor(model => model.Aluno.DiaPagamento, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-4">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Aluno.Peso, htmlAttributes: new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.Aluno.Peso, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Aluno.Peso, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Aluno.Braco, htmlAttributes: new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.Aluno.Braco, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Aluno.Braco, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Aluno.Abs, htmlAttributes: new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.Aluno.Abs, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Aluno.Abs, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.DiaPagamento, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.DiaPagamento, new { @class = "form-control", @type="number", min = 1, max = 31 })
+                    @Html.ValidationMessageFor(model => model.DiaPagamento, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
@@ -106,23 +81,47 @@
         <div class="row">
             <div class="col-sm-4">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Aluno.Gluteo, htmlAttributes: new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.Aluno.Gluteo, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Aluno.Gluteo, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.Peso, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.Peso, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Peso, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Aluno.Perna, htmlAttributes: new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.Aluno.Perna, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Aluno.Perna, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.Braco, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.Braco, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Braco, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Aluno.IMC, htmlAttributes: new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.Aluno.IMC, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Aluno.IMC, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.Abs, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.Abs, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Abs, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Gluteo, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.Gluteo, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Gluteo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Perna, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.Perna, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Perna, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IMC, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.IMC, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.IMC, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
@@ -145,12 +144,12 @@
             $('input:text:visible:first', this).focus();
         });
 
-        $('#Aluno_DataNascimento').datetimepicker({
+        $('#DataNascimento').datetimepicker({
             viewMode: 'years',
             format: 'L'
         });
 
-        $("#PlanoId").change(function(e){
+        $("#Ciclo_PlanoId").change(function(e){
             atualizarValorPlano($(this).val());
         })
     });
@@ -160,5 +159,5 @@
                 $("#valor").text("R$ " + plano.valor);
         })
     }
-    atualizarValorPlano($("#PlanoId").val());
+    atualizarValorPlano($("#Ciclo_PlanoId").val());
 </script>

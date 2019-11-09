@@ -27,7 +27,7 @@ namespace ControleFinanceiro.Models
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         //[DataType(DataType.Date)]
         [Display(Name = "Data de Nascimento")]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage="O campo Data Nascimento é obrigatório.")]
         public DateTime DataNascimento { get; set; }
 
@@ -59,13 +59,8 @@ namespace ControleFinanceiro.Models
         // [RegularExpression(@"^\([1-9]{2}\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$")]
         public string Telefone { get; set; }
 
-        [NotMapped]
-        [Display(Name = "Plano (em dias)")]
-        public int? PlanoId { get; set; }
-        [NotMapped]
-        [Display(Name = "Valor")]
-        public double? Valor { get; set; }
-
         public List<Mes> Meses { get; set; }
+        public int CicloId { get; set; }
+        public Ciclo Ciclo { get; set; }
     }
 }

@@ -64,3 +64,7 @@ C:\Users\johna\source\repos\ControleFinanceiro\bin\Debug\netcoreapp3.0\Microsoft
 C:\Users\johna\source\repos\ControleFinanceiro\bin\Debug\netcoreapp3.0\Newtonsoft.Json.dll
 C:\Users\johna\source\repos\ControleFinanceiro\bin\Debug\netcoreapp3.0\Newtonsoft.Json.Bson.dll
 C:\Users\johna\source\repos\ControleFinanceiro\obj\Debug\netcoreapp3.0\Razor\Views\Aluno\_DadosMes.cshtml.g.cs
+C:\Users\johna\source\repos\ControleFinanceiro\obj\Debug\netcoreapp3.0\Razor\Views\Aluno\_Pagar.cshtml.g.cs
+C:\Users\johna\source\repos\ControleFinanceiro\obj\Debug\netcoreapp3.0\Razor\Views\Plano\Index.cshtml.g.cs
+C:\Users\johna\source\repos\ControleFinanceiro\obj\Debug\netcoreapp3.0\Razor\Views\Plano\_Editar.cshtml.g.cs
+C:\Users\johna\source\repos\ControleFinanceiro\obj\Debug\netcoreapp3.0\Razor\Views\Plano\_Incluir.cshtml.g.cs

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,8 @@ namespace ControleFinanceiro.Models
         public int AlunoId { get; set; }
         public Aluno Aluno { get; set; }
         public int CicloId { get; set; }
-        // public Ciclo Ciclo { get; set; }
+        public Ciclo Ciclo { get; set; }
+        
+
     }
 }
