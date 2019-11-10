@@ -25,7 +25,7 @@ namespace ControleFinanceiro.Controllers
 
         public IActionResult Index()
         {
-            // servico.GerarMeses();
+            servico.GerarMeses();
             string[] meses = new string[12]{"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
             ViewBag.PrimeiroMes = meses[DateTime.Now.Month - 3];
             ViewBag.SegundoMes = meses[DateTime.Now.Month - 2];

@@ -27,6 +27,7 @@ namespace ControleFinanceiro
         public DbSet<Ciclo> Ciclos { get; set; }
 
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Log> Logs { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

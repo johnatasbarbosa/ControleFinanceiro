@@ -14424,6 +14424,16 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "Views\\Financas\\Index.cshtml",
+      "TargetPath": "Views\\Financas\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "Views\\Log\\Index.cshtml",
+      "TargetPath": "Views\\Log\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "Views\\Aluno\\_Ativar.cshtml",
       "TargetPath": "Views\\Aluno\\_Ativar.cshtml",
       "FileKind": "mvc"
@@ -14436,6 +14446,16 @@
     {
       "FilePath": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
       "TargetPath": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "Views\\Log\\_ExibirDetalhes.cshtml",
+      "TargetPath": "Views\\Log\\_ExibirDetalhes.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "Views\\Financas\\_Visualizar.cshtml",
+      "TargetPath": "Views\\Financas\\_Visualizar.cshtml",
       "FileKind": "mvc"
     }
   ],

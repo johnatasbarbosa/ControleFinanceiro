@@ -1,0 +1,52 @@
+﻿@model ControleFinanceiro.Models.Log
+
+<div class="modal-header">
+    <h3 class="modal-title" id="myModalLabel">Log</h3>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-body">
+
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Data, htmlAttributes: new { @class = "control-label" })
+                    @Html.DisplayFor(model => model.Data)
+                </div>
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Descricao, htmlAttributes: new { @class = "control-label" })
+                    @Html.DisplayFor(model => model.Descricao)
+                </div>
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.Ip, htmlAttributes: new { @class = "control-label" })
+                    @Html.DisplayFor(model => model.Ip)
+                </div>
+                <div class="form-group col-md-6">
+                    @Html.LabelFor(model => model.NomeUsuario, htmlAttributes: new { @class = "control-label" })
+                    @Html.DisplayFor(model => model.NomeUsuario)
+                </div>
+
+                @if (Model.StatusAnterior != "")
+                {
+                    <div class="form-group col-md-12">
+                        @Html.LabelFor(model => model.StatusAnterior, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.StatusAnterior, new { @class = "form-control", @readonly = "readonly", @rows = 6, @style = "overflow:auto; width:'auto'; resize:none;" })
+                    </div>
+                }
+
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(model => model.StatusAtual, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextAreaFor(model => model.StatusAtual, new { @class = "form-control", @readonly = "readonly", @rows = @Model.StatusAnterior == "" ? 11 : 6, @style = "overflow:auto; width:'auto'; resize:none;" })
+                </div>
+
+            </div>
+
+        </div><!-- /.box-body -->
+
+    </div>
+</div>
+
+<div class="modal-footer">
+    <input type="button" class="btn btn-default OnClickReload" data-dismiss="modal" value="Fechar">
+</div>

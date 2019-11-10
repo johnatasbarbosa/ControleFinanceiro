@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using ControleFinanceiro.Models;
 using ControleFinanceiro.Infra;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ControleFinanceiro.Services
 {
@@ -19,7 +21,8 @@ namespace ControleFinanceiro.Services
             contexto = new ControleFinanceiroContexto();
         }
 
-        public void GerarMeses(){
+        public void GerarMeses()
+        {
             var now = DateTime.Now;
             var alunos = contexto.Alunos.Where(x => x.Meses.Any(m => m.Data.Month == now.Month && m.Data.Year == now.Year) == false);
             // foreach(var aluno in alunos){
@@ -143,6 +146,7 @@ namespace ControleFinanceiro.Services
                         ValorPromocional = aluno.Ciclo.ValorPromocional
                     };
                     contexto.Meses.Add(mes);
+                    new LogServico().Salvar("Inserir aluno", TipoLog.AddRecord, "", "", "", JsonSerializer.Serialize(aluno));
                 }
                 else
                 {
@@ -162,6 +166,9 @@ namespace ControleFinanceiro.Services
                     alunoDB.IMC = aluno.IMC;
 
                     contexto.Entry(alunoDB).State = EntityState.Modified;
+
+                    var statusAnterior = contexto.Alunos.AsNoTracking().FirstOrDefault(x => x.Id == alunoDB.Id);
+                    new LogServico().Salvar("Editar aluno", TipoLog.UpdateRecord, "", "", JsonSerializer.Serialize(statusAnterior), JsonSerializer.Serialize(alunoDB));
                 }
                 result.Success = true;
                 result.Message = "Salvo com Sucesso";
@@ -185,10 +192,12 @@ namespace ControleFinanceiro.Services
                 if (aluno.Ativo == true)
                 {
                     aluno.Ativo = false;
+                    new LogServico().Salvar("Destivar aluno", TipoLog.Desativar, "", "", "", JsonSerializer.Serialize(aluno));
                 }
                 else
                 {
                     aluno.Ativo = true;
+                    new LogServico().Salvar("Ativar aluno", TipoLog.Ativar, "", "", "", JsonSerializer.Serialize(aluno));
                 }
                 contexto.SaveChanges();
             }
@@ -210,10 +219,12 @@ namespace ControleFinanceiro.Services
                 if (mes.Pago == true)
                 {
                     mes.Pago = false;
+                    new LogServico().Salvar("Desfazer pagamento", TipoLog.UpdateRecord, "", "", "", JsonSerializer.Serialize(mes));
                 }
                 else
                 {
                     mes.Pago = true;
+                    new LogServico().Salvar("Fazer pagamento", TipoLog.UpdateRecord, "", "", "", JsonSerializer.Serialize(mes));
                 }
                 contexto.SaveChanges();
             }

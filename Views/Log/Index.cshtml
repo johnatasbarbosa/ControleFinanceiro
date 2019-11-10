@@ -1,0 +1,49 @@
+﻿@model ControleFinanceiro.Models.Log
+
+@section header{
+    <div class="col-sm-6">
+        <h1 class="m-0 text-dark">Logs</h1>
+    </div><!-- /.col -->
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Logs</li>
+        </ol>
+    </div><!-- /.col -->
+    <!-- <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Inicio</a></li>
+        <li class="active">Logs</li>
+    </ol> -->
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-body">
+                <table id="grid-data" class="table table-bordered table-condensed table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th data-column-id="data" data-type="datetime">Data</th>
+                            <th data-column-id="ip">Ip</th>
+                            <th data-column-id="descricao">Descricao</th>
+                            <th data-column-id="nomeUsuario">Usuario</th>
+                            <th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="10%">Detalhes</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div><!-- /.box-body -->
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/AbrirModalNovo.js"></script>
+    <script src="~/js/Log/ConfigurarControles.js"></script>
+
+    <script type="text/javascript">
+        var urlDetalhes = "@Url.Action("ExibirDetalhes", "Log")";
+        var rotaListar = "@Url.Action("Listar")";
+
+        $(document).ready(configurarControles);
+    </script>
+}

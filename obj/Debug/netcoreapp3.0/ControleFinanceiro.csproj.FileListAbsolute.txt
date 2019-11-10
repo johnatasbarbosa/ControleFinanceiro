@@ -68,3 +68,7 @@ C:\Users\johna\source\repos\ControleFinanceiro\obj\Debug\netcoreapp3.0\Razor\Vie
 C:\Users\johna\source\repos\ControleFinanceiro\obj\Debug\netcoreapp3.0\Razor\Views\Plano\Index.cshtml.g.cs
 C:\Users\johna\source\repos\ControleFinanceiro\obj\Debug\netcoreapp3.0\Razor\Views\Plano\_Editar.cshtml.g.cs
 C:\Users\johna\source\repos\ControleFinanceiro\obj\Debug\netcoreapp3.0\Razor\Views\Plano\_Incluir.cshtml.g.cs
+C:\Users\johna\source\repos\ControleFinanceiro\obj\Debug\netcoreapp3.0\Razor\Views\Financas\Index.cshtml.g.cs
+C:\Users\johna\source\repos\ControleFinanceiro\obj\Debug\netcoreapp3.0\Razor\Views\Financas\_Visualizar.cshtml.g.cs
+C:\Users\johna\source\repos\ControleFinanceiro\obj\Debug\netcoreapp3.0\Razor\Views\Log\Index.cshtml.g.cs
+C:\Users\johna\source\repos\ControleFinanceiro\obj\Debug\netcoreapp3.0\Razor\Views\Log\_ExibirDetalhes.cshtml.g.cs

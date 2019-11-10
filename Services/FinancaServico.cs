@@ -5,17 +5,17 @@ using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Threading.Tasks;
 using ControleFinanceiro.Models;
+using ControleFinanceiro.ViewModels;
 using ControleFinanceiro.Infra;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 namespace ControleFinanceiro.Services
 {
-    public class PlanoServico
+    public class FinancasServico
     {
         private ControleFinanceiroContexto contexto;
 
-        public PlanoServico()
+        public FinancasServico()
         {
             contexto = new ControleFinanceiroContexto();
         }
@@ -25,48 +25,25 @@ namespace ControleFinanceiro.Services
             return contexto.Planos.FirstOrDefault(x => x.Id == id);
         }
 
-        public List<Plano> ObterPlanos()
-        {
-            return contexto.Planos.ToList();
-        }
-
-        public ResultProcessing Salvar(Plano plano)
-        {
-            var result = new ResultProcessing();
-
-            try
-            {
-                if (plano.Id == 0)
-                {
-                    contexto.Planos.Add(plano);
-                    new LogServico().Salvar("Inserir aluno", TipoLog.AddRecord, "", "", "", JsonSerializer.Serialize(plano));
-                }
-                else
-                {
-                    var planoDB = ObterPorId(plano.Id);
-                    // planoDB.QuantidadeDias = plano.QuantidadeDias;
-                    // planoDB.Valor = plano.Valor;
-                    planoDB.Excluido = true;
-                    contexto.Entry(planoDB).State = EntityState.Modified;
-
-                    var newPlano = new Plano(){
-                        QuantidadeDias = plano.QuantidadeDias,
-                        Valor = plano.Valor
-                    };
-                    contexto.Planos.Add(newPlano);
-
-                    new LogServico().Salvar("Editar aluno", TipoLog.UpdateRecord, "", "", JsonSerializer.Serialize(planoDB), JsonSerializer.Serialize(newPlano));
-                }
-                result.Success = true;
-                result.Message = "Salvo com Sucesso";
-                contexto.SaveChanges();
+        public Financa Calcular(string dateString){
+            try{
+                DateTime data = Convert.ToDateTime(dateString);
+                var valorArrecadado = contexto.Meses.Where(m => m.Pago && m.Ativo && m.Data.Month == data.Month && m.Data.Year == data.Year).Sum(m => m.Ciclo.ValorPromocional.HasValue ? m.Ciclo.ValorPromocional.Value : m.Ciclo.Plano.Valor);
+                var valorTotal = contexto.Meses.Where(m => m.Ativo && m.Data.Month == data.Month && m.Data.Year == data.Year).Sum(m => m.Ciclo.ValorPromocional.HasValue ? m.Ciclo.ValorPromocional.Value : m.Ciclo.Plano.Valor);
+                var qtdAlunosAtivos = contexto.Meses.Where(m => m.Ativo && m.Data.Month == data.Month && m.Data.Year == data.Year).Count();
+                
+                var financa = new Financa(){
+                    ValorArrecadado = valorArrecadado,
+                    ValorTotal = valorTotal,
+                    QtdAlunosAtivos = qtdAlunosAtivos
+                };
+                return financa;
             }
             catch(Exception e)
             {
-                result.Success = false;
-                result.Message = e.Message;
+                var a = e;
+                return null;
             }
-            return result;
         }
 
         /// <summary>
@@ -85,12 +62,16 @@ namespace ControleFinanceiro.Services
             int registroInicial = (pagina - 1) * qtdLinhas;
             campoOrdenacao += tipoOrdenacao.ToUpper().Equals("DESC") ? " DESCENDING" : "";
             
-            var dadosFiltrados = contexto.Planos.Where(a =>
-                a.Excluido == false &&
-                (busca == null ||
-                a.QuantidadeDias.ToString().Contains(busca.ToUpper()))
-            );
-            dadosFiltrados = dadosFiltrados.OrderBy(campoOrdenacao);
+            // var dadosFiltrados = contexto.Planos.Where(a =>
+            //     (busca == null ||
+            //     a.QuantidadeDias.ToString().Contains(busca.ToUpper()))
+            // );
+            // var distinctPeople = contexto.Meses.GroupBy(p => p.Data).Select(g => g.First()).ToList();
+            var meses = contexto.Meses.Select(m => new DateTime(m.Data.Year, m.Data.Month, 1)).Distinct().ToList();
+            // var meses2 = meses.OrderByDescending(m => m.Year).ThenByDescending(m => m.Month).ToList();
+
+            // var dadosFiltrados = contexto.Meses.Select(m => new DateTime(m.Data.Year, m.Data.Month, 1)).Distinct();
+            var dadosFiltrados = meses.OrderByDescending(x => x.Date);
             
             DadosPaginados dadosPaginados = new DadosPaginados();
             dadosPaginados.Pagina = pagina;

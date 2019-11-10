@@ -5,68 +5,65 @@ using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Threading.Tasks;
 using ControleFinanceiro.Models;
+using ControleFinanceiro.ViewModels;
 using ControleFinanceiro.Infra;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 namespace ControleFinanceiro.Services
 {
-    public class PlanoServico
+    public class LogServico
     {
         private ControleFinanceiroContexto contexto;
 
-        public PlanoServico()
+        public LogServico()
         {
             contexto = new ControleFinanceiroContexto();
         }
 
-        public Plano ObterPorId(int id)
+        public Log ObterPorId(int id)
         {
-            return contexto.Planos.FirstOrDefault(x => x.Id == id);
+            return contexto.Logs.FirstOrDefault(l => l.Id == id);
         }
 
-        public List<Plano> ObterPlanos()
+        public ResultProcessing Salvar(string descricao, TipoLog tipo, string usuario = "", string ip = "", string statusAnterior = "", string statusAtual = "")
         {
-            return contexto.Planos.ToList();
+            Log item = new Log()
+            {
+                Descricao = descricao,
+                TipoLog = tipo,
+                NomeUsuario = usuario,
+                Ip = ip,
+                StatusAnterior = statusAnterior,
+                StatusAtual = statusAtual
+            };
+            return Salvar(item);
         }
 
-        public ResultProcessing Salvar(Plano plano)
+        public ResultProcessing Salvar(Log item)
         {
             var result = new ResultProcessing();
-
             try
             {
-                if (plano.Id == 0)
+                if (item.Id == 0)
                 {
-                    contexto.Planos.Add(plano);
-                    new LogServico().Salvar("Inserir aluno", TipoLog.AddRecord, "", "", "", JsonSerializer.Serialize(plano));
+                    contexto.Logs.Add(item);
                 }
                 else
                 {
-                    var planoDB = ObterPorId(plano.Id);
-                    // planoDB.QuantidadeDias = plano.QuantidadeDias;
-                    // planoDB.Valor = plano.Valor;
-                    planoDB.Excluido = true;
-                    contexto.Entry(planoDB).State = EntityState.Modified;
-
-                    var newPlano = new Plano(){
-                        QuantidadeDias = plano.QuantidadeDias,
-                        Valor = plano.Valor
-                    };
-                    contexto.Planos.Add(newPlano);
-
-                    new LogServico().Salvar("Editar aluno", TipoLog.UpdateRecord, "", "", JsonSerializer.Serialize(planoDB), JsonSerializer.Serialize(newPlano));
+                    result.Success = false;
+                    result.Message = "Is not logs editing allowed";
+                    return result;
                 }
-                result.Success = true;
-                result.Message = "Salvo com Sucesso";
                 contexto.SaveChanges();
+                result.Success = true;
+                return result;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 result.Success = false;
                 result.Message = e.Message;
+                return result;
             }
-            return result;
         }
 
         /// <summary>
@@ -79,19 +76,23 @@ namespace ControleFinanceiro.Services
         /// <param name="tipoOrdenacao">Tipo de ordenação : asc / desc</param>
         /// <returns>Retorna apenas os dados que devem ser exibidos na página atual.
         /// </returns>
-        public DadosPaginados ListarPaginado(int pagina, int qtdLinhas, string busca, string campoOrdenacao, string tipoOrdenacao)
+        public DadosPaginados ListarPaginado(int pagina, int qtdLinhas, string busca, string campoOrdenacao, string tipoOrdenacao, TipoLog? tipo)
         {
             //Calcula o registro inicial a ser mostrado com base na página atual e a qtd de linhas a ser exibida na mesma.
             int registroInicial = (pagina - 1) * qtdLinhas;
             campoOrdenacao += tipoOrdenacao.ToUpper().Equals("DESC") ? " DESCENDING" : "";
-            
-            var dadosFiltrados = contexto.Planos.Where(a =>
-                a.Excluido == false &&
-                (busca == null ||
-                a.QuantidadeDias.ToString().Contains(busca.ToUpper()))
+
+            var dadosFiltrados = contexto.Logs.Where(p =>
+                (tipo.HasValue == false || tipo.Value == 0 || p.TipoLog == tipo) && (
+                busca == null ||
+                p.Descricao.Contains(busca) ||
+                p.Ip.Contains(busca) ||
+                p.Data.ToString().Contains(busca) ||
+                p.NomeUsuario.Contains(busca) ||
+                p.TipoLog.ToString().Contains(busca))
             );
             dadosFiltrados = dadosFiltrados.OrderBy(campoOrdenacao);
-            
+
             DadosPaginados dadosPaginados = new DadosPaginados();
             dadosPaginados.Pagina = pagina;
             dadosPaginados.QuantidadePorPagina = qtdLinhas;
@@ -105,8 +106,12 @@ namespace ControleFinanceiro.Services
             {
                 dadosPaginados.Dados = dadosFiltrados.Skip(registroInicial).Take(qtdLinhas).ToList();
             }
+            foreach (Log l in dadosPaginados.Dados)
+            {
+                l.StatusAnterior = "";
+                l.StatusAtual = "";
+            }
             return dadosPaginados;
         }
-
     }
 }
