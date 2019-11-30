@@ -20,18 +20,29 @@ namespace ControleFinanceiro.Models
 
         public int Id { get; set; }
 
+        [Display(Name = "Data de vencimento")]
         public DateTime Data { get; set; }
 
         public bool Pago { get; set; }
 
+        [Display(Name = "Dia de pagamento")]
         public DateTime? DiaPagamento { get; set; }
 
         public bool Ativo { get; set; }
         public int AlunoId { get; set; }
         public Aluno Aluno { get; set; }
-        public int CicloId { get; set; }
-        public Ciclo Ciclo { get; set; }
         
+        
+        [Display(Name = "Plano (em dias)")]
+        public int PlanoId { get; set; }
+        public Plano Plano { get; set; }
+
+        [Display(Name = "Professor")]
+        public int ProfessorId { get; set; }
+        public Professor Professor { get; set; }
+
+        [Display(Name = "Valor Promocional")]
+        public double? ValorPromocional { get; set; }
 
     }
 }

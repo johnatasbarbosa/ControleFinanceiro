@@ -10,9 +10,11 @@ using ControleFinanceiro.Infra;
 using ControleFinanceiro.Services;
 using System.Net;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ControleFinanceiro.Controllers
 {
+    [Authorize(Roles = "Admin, Secretary")]
     public class AlunoController : Controller
     {
         private readonly ILogger<AlunoController> _logger;
@@ -25,7 +27,7 @@ namespace ControleFinanceiro.Controllers
 
         public IActionResult Index()
         {
-            servico.GerarMeses();
+            ViewBag.MesesGerados = servico.GerarMeses();
             string[] meses = new string[12]{"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
             ViewBag.PrimeiroMes = meses[DateTime.Now.Month - 3];
             ViewBag.SegundoMes = meses[DateTime.Now.Month - 2];
@@ -209,7 +211,7 @@ namespace ControleFinanceiro.Controllers
             }
 
             var aluno = servico.ObterPorId(id.Value);
-            // ViewBag.Ciclos = servico.ObterCiclosPorAlunoId(aluno.Id);
+            ViewBag.Planos = new PlanoServico().ObterPlanos();
             if (aluno != null)
                 return View("Pagamentos", aluno);
             else
@@ -228,6 +230,8 @@ namespace ControleFinanceiro.Controllers
             var mes = new Mes(){
                 Id = body.GetValue("id").Value<int>(),
                 Pago = body.GetValue("pago").Value<bool>(),
+                PlanoId = body.GetValue("planoId").Value<int>(),
+                ValorPromocional = body.GetValue("valorPromocional").Value<double>(),
                 Ativo = body.GetValue("ativo").Value<bool>()
             };
             result = servico.SalvarMes(mes);

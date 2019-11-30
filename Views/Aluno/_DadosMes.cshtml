@@ -8,7 +8,28 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <div id="abreModal"></div>
+                <div class="row">
+                    <div class="form-group col-sm-4">
+                        <label>Plano</label>
+                        <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                            <select data-bind="options: $root.planos,
+                                optionsText: 'quantidadeDias',
+                                optionsValue: 'id',
+                                value: planoId">
+                            </select>
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span data-bind="text: valor"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label>Valor Promocional</label>
+                        <input class="form-control" data-bind="value: valorPromocional" />
+                    </div>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-bind="click: $root.pagar, visible: ativo() == true && pago() == false;">Pagar</button>

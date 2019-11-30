@@ -16,7 +16,7 @@ namespace ControleFinanceiro.Models
 
         public int Id { get; set; }
         public int QuantidadeDias { get; set; }
-        public float Valor { get; set; }
+        public double Valor { get; set; }
         public bool Excluido { get; set; }
     }
 }

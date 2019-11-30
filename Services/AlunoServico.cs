@@ -6,35 +6,46 @@ using System.Text;
 using System.Threading.Tasks;
 using ControleFinanceiro.Models;
 using ControleFinanceiro.Infra;
+using ControleFinanceiro.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ControleFinanceiro.Services
 {
+    [Authorize]
     public class AlunoServico
     {
-        private ControleFinanceiroContexto contexto;
+        private ApplicationDbContext contexto;
 
         public AlunoServico()
         {
-            contexto = new ControleFinanceiroContexto();
+            contexto = new ApplicationDbContext();
         }
 
-        public void GerarMeses()
+        public int GerarMeses()
         {
-            var now = DateTime.Now;
-            var alunos = contexto.Alunos.Where(x => x.Meses.Any(m => m.Data.Month == now.Month && m.Data.Year == now.Year) == false);
-            // foreach(var aluno in alunos){
-            //     var lastCiclo = contexto.Ciclos.FirstOrDefault(x => x.AlunoId == aluno.Id && x.DataFinal == null);
-            //     var mes = new Mes();
-            //     mes.AlunoId = aluno.Id;
-            //     mes.Ativo = aluno.Ativo;
-            //     mes.Data = new DateTime(now.Year, now.Month, aluno.DiaPagamento);
-            //     mes.CicloId = lastCiclo == null ? 0 : lastCiclo.Id;
-            //     contexto.Meses.Add(mes);
-            // }
-            contexto.SaveChanges();
+            try{
+                var now = DateTime.Now;
+                var alunos = contexto.Alunos.Where(x => x.Meses.Any(m => m.Data.Month == now.Month && m.Data.Year == now.Year) == false);
+                foreach(var aluno in alunos){
+                    var mes = new Mes(){
+                        Data = new DateTime(DateTime.Now.Year, DateTime.Now.Month, aluno.DiaPagamento),
+                        AlunoId = aluno.Id,
+                        PlanoId = aluno.PlanoId,
+                        ProfessorId = aluno.ProfessorId,
+                        ValorPromocional = aluno.ValorPromocional
+                    };
+                    contexto.Meses.Add(mes);
+                }
+                contexto.SaveChanges();
+                return alunos.Count();
+            }
+            catch(Exception e)
+            {
+                return -1;
+            }
         }
 
         public Aluno ObterPorId(int id)
@@ -52,32 +63,14 @@ namespace ControleFinanceiro.Services
 
         public Aluno ObterPorIdParaEditar(int id)
         {
-            return contexto.Alunos.Include(x => x.Ciclo).FirstOrDefault(x => x.Id == id);
+            var aluno = contexto.Alunos.FirstOrDefault(x => x.Id == id);
+            aluno.Plano = contexto.Planos.FirstOrDefault(a => a.Id == aluno.PlanoId);
+            return aluno;
         }
 
         public Mes ObterMesPorId(int id)
         {
-            return contexto.Meses.Include(x => x.Aluno).FirstOrDefault(x => x.Id == id);
-        }
-
-        // public List<Ciclo> ObterCiclosPorAlunoId(int alunoId)
-        // {
-        //     var ciclos = contexto.Ciclos.Where(a => a.Aluno.Id == alunoId).Select(x => 
-        //         new Ciclo(){
-        //             Id = x.Id,
-        //             Plano = x.Plano,
-        //             DataInicio = x.DataInicio,
-        //             DataFinal = x.DataFinal,
-        //             Professor = x.Professor,
-        //             ValorPromocional = x.ValorPromocional
-        //         }
-        //     ).ToList();
-        //     return ciclos;
-        // }
-
-        public Ciclo ObterCicloPorAlunoId(int alunoId)
-        {
-            return contexto.Alunos.Include(x => x.Ciclo).Select(x => x.Ciclo).FirstOrDefault(a => a.Id == alunoId);
+            return contexto.Meses.Include(x => x.Aluno).Include(x => x.Plano).FirstOrDefault(x => x.Id == id);
         }
 
         public List<Plano> ObterPlanos()
@@ -99,6 +92,8 @@ namespace ControleFinanceiro.Services
                     mesDB.DiaPagamento = null;
                 }
                 mesDB.Pago = mes.Pago;
+                mesDB.PlanoId = mes.PlanoId;
+                mesDB.ValorPromocional = mes.ValorPromocional;
                 if(mesDB.Ativo && mes.Ativo == false){
                     mesDB.DiaPagamento = null;
                     mesDB.Pago = false;
@@ -125,34 +120,41 @@ namespace ControleFinanceiro.Services
             try
             {
                 if (aluno.Id == 0)
-                {
-                    // var ciclo = new Ciclo();
-                    // ciclo.Plano = contexto.Planos.FirstOrDefault(x => x.Id == aluno.PlanoId);
-                    aluno.Ciclo.Professor = contexto.Professores.FirstOrDefault();
-                    var planoSelecionado = contexto.Planos.FirstOrDefault(x => x.Id == aluno.Ciclo.PlanoId);
-                    if(aluno.Ciclo.ValorPromocional == planoSelecionado.Valor){
-                        aluno.Ciclo.ValorPromocional = null;
-                    }
-                    contexto.Alunos.Add(aluno);
-                    contexto.SaveChanges();
-                    // contexto.Alunos.Add(aluno);
-
-                    var mes = new Mes();
-                    mes.Data = new DateTime(DateTime.Now.Year, DateTime.Now.Month, aluno.DiaPagamento);
-                    mes.AlunoId = aluno.Id;
-                    mes.Ciclo = new Ciclo(){
-                        PlanoId = aluno.Ciclo.PlanoId,
-                        ProfessorId = aluno.Ciclo.ProfessorId,
-                        ValorPromocional = aluno.Ciclo.ValorPromocional
+                {                    
+                    aluno.ProfessorId = contexto.Professores.Select(p => p.Id).FirstOrDefault();
+                    var mes = new Mes(){
+                        Data = new DateTime(DateTime.Now.Year, DateTime.Now.Month, aluno.DiaPagamento),
+                        PlanoId = aluno.PlanoId,
+                        ProfessorId = aluno.ProfessorId,
+                        ValorPromocional = aluno.ValorPromocional
                     };
-                    contexto.Meses.Add(mes);
-                    new LogServico().Salvar("Inserir aluno", TipoLog.AddRecord, "", "", "", JsonSerializer.Serialize(aluno));
+                    aluno.Meses = new List<Mes>();
+                    aluno.Meses.Add(mes);
+                    contexto.Alunos.Add(aluno);
+                    //contexto.SaveChanges();
+
+                    var alunoLog = new Aluno(){
+                        Nome = aluno.Nome,
+                        DataNascimento = aluno.DataNascimento,
+                        Telefone = aluno.Telefone,
+                        DiaPagamento = aluno.DiaPagamento,
+                        Peso = aluno.Peso,
+                        Braco = aluno.Braco,
+                        Abs = aluno.Abs,
+                        Gluteo = aluno.Gluteo,
+                        Perna = aluno.Perna,
+                        IMC = aluno.IMC,
+                        PlanoId = aluno.PlanoId,
+                        ProfessorId = aluno.ProfessorId,
+                        ValorPromocional = aluno.ValorPromocional
+                    };
+                    new LogServico().Salvar("Inserir aluno", TipoLog.AddRecord, "", "", "", JsonSerializer.Serialize(alunoLog));
                 }
                 else
                 {
                     var alunoDB = ObterPorIdParaEditar(aluno.Id);
-                    alunoDB.Ciclo.PlanoId = aluno.Ciclo.PlanoId;
-                    alunoDB.Ciclo.ValorPromocional = aluno.Ciclo.ValorPromocional;
+                    alunoDB.PlanoId = aluno.PlanoId;
+                    alunoDB.ValorPromocional = aluno.ValorPromocional;
                     
                     alunoDB.Nome = aluno.Nome;
                     alunoDB.DataNascimento = aluno.DataNascimento;
@@ -219,11 +221,13 @@ namespace ControleFinanceiro.Services
                 if (mes.Pago == true)
                 {
                     mes.Pago = false;
+                    mes.DiaPagamento = null;
                     new LogServico().Salvar("Desfazer pagamento", TipoLog.UpdateRecord, "", "", "", JsonSerializer.Serialize(mes));
                 }
                 else
                 {
                     mes.Pago = true;
+                    mes.DiaPagamento = DateTime.Now;
                     new LogServico().Salvar("Fazer pagamento", TipoLog.UpdateRecord, "", "", "", JsonSerializer.Serialize(mes));
                 }
                 contexto.SaveChanges();

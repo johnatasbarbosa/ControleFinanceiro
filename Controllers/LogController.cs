@@ -10,10 +10,11 @@ using ControleFinanceiro.Infra;
 using ControleFinanceiro.Services;
 using System.Net;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ControleFinanceiro.Web.Controllers
 {
-    // [Authorize]
+    [Authorize(Roles = "Admin")]
     public class LogController : Controller
     {
         private LogServico servico = new LogServico();

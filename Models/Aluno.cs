@@ -60,7 +60,19 @@ namespace ControleFinanceiro.Models
         public string Telefone { get; set; }
 
         public List<Mes> Meses { get; set; }
-        public int CicloId { get; set; }
-        public Ciclo Ciclo { get; set; }
+        
+        
+        [Display(Name = "Plano (em dias)")]
+        public int PlanoId { get; set; }
+        [NotMapped]
+        public Plano Plano { get; set; }
+
+        [Display(Name = "Professor")]
+        public int ProfessorId { get; set; }
+        [NotMapped]
+        public Professor Professor { get; set; }
+
+        [Display(Name = "Valor Promocional")]
+        public double? ValorPromocional { get; set; }
     }
 }

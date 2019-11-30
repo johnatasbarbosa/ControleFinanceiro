@@ -10,9 +10,11 @@ using ControleFinanceiro.Infra;
 using ControleFinanceiro.Services;
 using System.Net;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ControleFinanceiro.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class PlanoController : Controller
     {
         private readonly ILogger<PlanoController> _logger;

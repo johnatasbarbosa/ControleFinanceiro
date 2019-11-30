@@ -11,76 +11,93 @@
     @Html.AntiForgeryToken()
 
     <br />
-    <dl class="dl-horizontal">
-        <dt>
+    <dl class="row">
+        <dt class="col-sm-5">
             @Html.DisplayNameFor(model => model.DiaPagamento)
         </dt>
 
-        <dd>
+        <dd class="col-sm-7">
             @Html.DisplayFor(model => model.DiaPagamento)
         </dd>
 
-        <dt>
+        <dt class="col-sm-5">
             @Html.DisplayNameFor(model => model.DataNascimento)
         </dt>
 
-        <dd>
+        <dd class="col-sm-7">
             @Html.DisplayFor(model => model.DataNascimento)
         </dd>
 
-        <dt>
+        <dt class="col-sm-5">
             @Html.DisplayNameFor(model => model.Telefone)
         </dt>
 
-        <dd>
+        <dd class="col-sm-7">
             @Html.DisplayFor(model => model.Telefone)
         </dd>
 
-        <dt>
+        <dt class="col-sm-5">
+            @Html.DisplayName("Plano")
+        </dt>
+
+        <dd class="col-sm-7">
+            @if(Model.ValorPromocional.HasValue){
+                <span>
+                    @Html.DisplayFor(model => model.Plano.QuantidadeDias) dias - R$ @Html.DisplayFor(model => model.ValorPromocional);
+                </span>
+            }
+            else{
+                <span>
+                    @Html.DisplayFor(model => model.Plano.QuantidadeDias) dias - R$ @Html.DisplayFor(model => model.Plano.Valor);
+                </span>
+            }
+        </dd>
+
+        <dt class="col-sm-5">
             @Html.DisplayNameFor(model => model.Peso)
         </dt>
 
-        <dd>
+        <dd class="col-sm-7">
             @Html.DisplayFor(model => model.Peso)
         </dd>
 
-        <dt>
+        <dt class="col-sm-5">
             @Html.DisplayNameFor(model => model.Braco)
         </dt>
 
-        <dd>
+        <dd class="col-sm-7">
             @Html.DisplayFor(model => model.Braco)
         </dd>
 
-        <dt>
+        <dt class="col-sm-5">
             @Html.DisplayNameFor(model => model.Abs)
         </dt>
 
-        <dd>
+        <dd class="col-sm-7">
             @Html.DisplayFor(model => model.Abs)
         </dd>
 
-        <dt>
+        <dt class="col-sm-5">
             @Html.DisplayNameFor(model => model.Gluteo)
         </dt>
 
-        <dd>
+        <dd class="col-sm-7">
             @Html.DisplayFor(model => model.Gluteo)
         </dd>
 
-        <dt>
+        <dt class="col-sm-5">
             @Html.DisplayNameFor(model => model.Perna)
         </dt>
 
-        <dd>
+        <dd class="col-sm-7">
             @Html.DisplayFor(model => model.Perna)
         </dd>
 
-        <dt>
+        <dt class="col-sm-5">
             @Html.DisplayNameFor(model => model.IMC)
         </dt>
 
-        <dd>
+        <dd class="col-sm-7">
             @Html.DisplayFor(model => model.IMC)
         </dd>
     </dl>

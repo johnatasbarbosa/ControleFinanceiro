@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ControleFinanceiro.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ControleFinanceiro.Controllers
 {
+    [Authorize(Roles = "Admin, Secretary")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -23,6 +25,7 @@ namespace ControleFinanceiro.Controllers
             return View();
         }
 
+        [Authorize]
         public IActionResult Privacy()
         {
             return View();

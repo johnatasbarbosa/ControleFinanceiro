@@ -8,16 +8,19 @@ using ControleFinanceiro.Models;
 using ControleFinanceiro.ViewModels;
 using ControleFinanceiro.Infra;
 using Microsoft.EntityFrameworkCore;
+using ControleFinanceiro.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ControleFinanceiro.Services
 {
+    [Authorize]
     public class LogServico
     {
-        private ControleFinanceiroContexto contexto;
+        private ApplicationDbContext contexto;
 
         public LogServico()
         {
-            contexto = new ControleFinanceiroContexto();
+            contexto = new ApplicationDbContext();
         }
 
         public Log ObterPorId(int id)

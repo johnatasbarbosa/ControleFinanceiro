@@ -8,16 +8,19 @@ using ControleFinanceiro.Models;
 using ControleFinanceiro.ViewModels;
 using ControleFinanceiro.Infra;
 using Microsoft.EntityFrameworkCore;
+using ControleFinanceiro.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ControleFinanceiro.Services
 {
-    public class FinancasServico
+    [Authorize]    
+    public class FinancaServico
     {
-        private ControleFinanceiroContexto contexto;
+        private ApplicationDbContext contexto;
 
-        public FinancasServico()
+        public FinancaServico()
         {
-            contexto = new ControleFinanceiroContexto();
+            contexto = new ApplicationDbContext();
         }
 
         public Plano ObterPorId(int id)
@@ -28,14 +31,16 @@ namespace ControleFinanceiro.Services
         public Financa Calcular(string dateString){
             try{
                 DateTime data = Convert.ToDateTime(dateString);
-                var valorArrecadado = contexto.Meses.Where(m => m.Pago && m.Ativo && m.Data.Month == data.Month && m.Data.Year == data.Year).Sum(m => m.Ciclo.ValorPromocional.HasValue ? m.Ciclo.ValorPromocional.Value : m.Ciclo.Plano.Valor);
-                var valorTotal = contexto.Meses.Where(m => m.Ativo && m.Data.Month == data.Month && m.Data.Year == data.Year).Sum(m => m.Ciclo.ValorPromocional.HasValue ? m.Ciclo.ValorPromocional.Value : m.Ciclo.Plano.Valor);
-                var qtdAlunosAtivos = contexto.Meses.Where(m => m.Ativo && m.Data.Month == data.Month && m.Data.Year == data.Year).Count();
-                
+                var valorArrecadado = contexto.Meses.Where(m => m.Pago && m.Ativo && m.Data.Month == data.Month && m.Data.Year == data.Year).Sum(m => m.ValorPromocional.HasValue ? m.ValorPromocional.Value : m.Plano.Valor);
+                var valorTotal = contexto.Meses.Where(m => m.Ativo && m.Data.Month == data.Month && m.Data.Year == data.Year).Sum(m => m.ValorPromocional.HasValue ? m.ValorPromocional.Value : m.Plano.Valor);
+                var qtdAlunosPagarem = contexto.Meses.Count(m => m.Pago && m.Ativo && m.Data.Month == data.Month && m.Data.Year == data.Year);
+                var qtdAlunosTotais = contexto.Meses.Count(m => m.Ativo && m.Data.Month == data.Month && m.Data.Year == data.Year);
+
                 var financa = new Financa(){
                     ValorArrecadado = valorArrecadado,
                     ValorTotal = valorTotal,
-                    QtdAlunosAtivos = qtdAlunosAtivos
+                    QtdAlunosPagarem = qtdAlunosPagarem,
+                    QtdAlunosTotais = qtdAlunosTotais
                 };
                 return financa;
             }

@@ -29,6 +29,23 @@
                 @Html.DisplayFor(model => model.Aluno.Nome)
             </dd>
 
+            <dt>
+                @Html.DisplayName("Plano")
+            </dt>
+
+            <dd>
+                @if(Model.ValorPromocional.HasValue){
+                    <span>
+                        @Html.DisplayFor(model => model.Plano.QuantidadeDias) dias - R$ @Html.DisplayFor(model => model.ValorPromocional);
+                    </span>
+                }
+                else{
+                    <span>
+                        @Html.DisplayFor(model => model.Plano.QuantidadeDias) dias - R$ @Html.DisplayFor(model => model.Plano.Valor);
+                    </span>
+                }
+            </dd>
+
         </dl>
     </div>
 

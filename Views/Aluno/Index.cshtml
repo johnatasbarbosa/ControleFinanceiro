@@ -54,6 +54,8 @@
         var urlPagar = "@Url.Action("Pagar")";
         var urlPagamentos = "@Url.Action("Pagamentos")";
         
+        var mesesGerados = JSON.parse('@Json.Serialize(@ViewBag.MesesGerados)');
+        console.log("mesesGerados", mesesGerados);
         $(document).ready(configurarControles);
         $("#grid-basic").bootgrid();
     </script>

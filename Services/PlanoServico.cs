@@ -8,16 +8,19 @@ using ControleFinanceiro.Models;
 using ControleFinanceiro.Infra;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using ControleFinanceiro.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ControleFinanceiro.Services
 {
+    [Authorize]
     public class PlanoServico
     {
-        private ControleFinanceiroContexto contexto;
+        private ApplicationDbContext contexto;
 
         public PlanoServico()
         {
-            contexto = new ControleFinanceiroContexto();
+            contexto = new ApplicationDbContext();
         }
 
         public Plano ObterPorId(int id)
@@ -39,7 +42,7 @@ namespace ControleFinanceiro.Services
                 if (plano.Id == 0)
                 {
                     contexto.Planos.Add(plano);
-                    new LogServico().Salvar("Inserir aluno", TipoLog.AddRecord, "", "", "", JsonSerializer.Serialize(plano));
+                    new LogServico().Salvar("Inserir plano", TipoLog.AddRecord, "", "", "", JsonSerializer.Serialize(plano));
                 }
                 else
                 {
@@ -55,7 +58,7 @@ namespace ControleFinanceiro.Services
                     };
                     contexto.Planos.Add(newPlano);
 
-                    new LogServico().Salvar("Editar aluno", TipoLog.UpdateRecord, "", "", JsonSerializer.Serialize(planoDB), JsonSerializer.Serialize(newPlano));
+                    new LogServico().Salvar("Editar plano", TipoLog.UpdateRecord, "", "", JsonSerializer.Serialize(planoDB), JsonSerializer.Serialize(newPlano));
                 }
                 result.Success = true;
                 result.Message = "Salvo com Sucesso";

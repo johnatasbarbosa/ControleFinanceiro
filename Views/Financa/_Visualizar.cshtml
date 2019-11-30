@@ -1,0 +1,35 @@
+﻿@model ControleFinanceiro.ViewModels.Financa
+
+
+@using (Html.BeginForm(ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["controller"].ToString(), FormMethod.Post, new { id = "formCrud" }))
+{
+    <div class="modal-header">
+        <h3 class="modal-title" id="myModalLabel">Finanças</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    </div>
+
+    @Html.AntiForgeryToken()
+
+    <br />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("Quantidade de aluno (Pagaram/Total)")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QtdAlunosPagarem) / @Html.DisplayFor(model => model.QtdAlunosTotais)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Valor (Arrecadado/Total)")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ValorArrecadado) / @Html.DisplayFor(model => model.ValorTotal)
+        </dd>
+    </dl>
+
+    <br />
+
+    <div class="modal-footer">
+        <input type="button" class="btn btn-default" data-dismiss="modal" value="Fechar">
+    </div>
+}
