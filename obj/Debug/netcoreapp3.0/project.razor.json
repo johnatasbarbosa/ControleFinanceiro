@@ -1,5 +1,5 @@
 {
-  "FilePath": "c:\\Users\\johna\\source\\repos\\CF\\ControleFinanceiro\\ControleFinanceiro.csproj",
+  "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\ControleFinanceiro.csproj",
   "Configuration": {
     "ConfigurationName": "MVC-3.0",
     "LanguageVersion": "3.0",
@@ -14344,138 +14344,143 @@
   "RootNamespace": "ControleFinanceiro",
   "Documents": [
     {
-      "FilePath": "Views\\Shared\\Error.cshtml",
-      "TargetPath": "Views\\Shared\\Error.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "Views\\Plano\\_Incluir.cshtml",
-      "TargetPath": "Views\\Plano\\_Incluir.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "Views\\Aluno\\_Editar.cshtml",
-      "TargetPath": "Views\\Aluno\\_Editar.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "Views\\Shared\\_MenuOptions.cshtml",
-      "TargetPath": "Views\\Shared\\_MenuOptions.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "Views\\Home\\Index.cshtml",
-      "TargetPath": "Views\\Home\\Index.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "Views\\Home\\Privacy.cshtml",
-      "TargetPath": "Views\\Home\\Privacy.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "Views\\Plano\\Index.cshtml",
-      "TargetPath": "Views\\Plano\\Index.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "Views\\Aluno\\_Pagar.cshtml",
-      "TargetPath": "Views\\Aluno\\_Pagar.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "Views\\_ViewImports.cshtml",
-      "TargetPath": "Views\\_ViewImports.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "Views\\Shared\\_Layout1.cshtml",
-      "TargetPath": "Views\\Shared\\_Layout1.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "Views\\Plano\\_Editar.cshtml",
-      "TargetPath": "Views\\Plano\\_Editar.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "Views\\Shared\\_CookieConsentPartial.cshtml",
-      "TargetPath": "Views\\Shared\\_CookieConsentPartial.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "Views\\Aluno\\_DadosMes.cshtml",
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Aluno\\_DadosMes.cshtml",
       "TargetPath": "Views\\Aluno\\_DadosMes.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "Views\\Aluno\\_Visualizar.cshtml",
-      "TargetPath": "Views\\Aluno\\_Visualizar.cshtml",
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Shared\\_CookieConsentPartial.cshtml",
+      "TargetPath": "Views\\Shared\\_CookieConsentPartial.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "Views\\Aluno\\Index.cshtml",
-      "TargetPath": "Views\\Aluno\\Index.cshtml",
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Shared\\Error.cshtml",
+      "TargetPath": "Views\\Shared\\Error.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "Views\\Shared\\_Layout.cshtml",
-      "TargetPath": "Views\\Shared\\_Layout.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "Views\\Aluno\\Pagamentos.cshtml",
-      "TargetPath": "Views\\Aluno\\Pagamentos.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "Views\\_ViewStart.cshtml",
-      "TargetPath": "Views\\_ViewStart.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "Views\\Log\\Index.cshtml",
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Log\\Index.cshtml",
       "TargetPath": "Views\\Log\\Index.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "Areas\\Identity\\Pages\\_ViewStart.cshtml",
-      "TargetPath": "Areas\\Identity\\Pages\\_ViewStart.cshtml",
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Home\\Index.cshtml",
+      "TargetPath": "Views\\Home\\Index.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "Views\\Aluno\\_Ativar.cshtml",
-      "TargetPath": "Views\\Aluno\\_Ativar.cshtml",
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Home\\Privacy.cshtml",
+      "TargetPath": "Views\\Home\\Privacy.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "Views\\Financa\\_Visualizar.cshtml",
-      "TargetPath": "Views\\Financa\\_Visualizar.cshtml",
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Financa\\Index.cshtml",
+      "TargetPath": "Views\\Financa\\Index.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "Views\\Shared\\_LoginPartial.cshtml",
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Plano\\_Incluir.cshtml",
+      "TargetPath": "Views\\Plano\\_Incluir.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Aluno\\Pagamentos.cshtml",
+      "TargetPath": "Views\\Aluno\\Pagamentos.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Plano\\Index.cshtml",
+      "TargetPath": "Views\\Plano\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Plano\\_Editar.cshtml",
+      "TargetPath": "Views\\Plano\\_Editar.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Shared\\_MenuOptions.cshtml",
+      "TargetPath": "Views\\Shared\\_MenuOptions.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\_ViewStart.cshtml",
+      "TargetPath": "Views\\_ViewStart.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Aluno\\_Visualizar.cshtml",
+      "TargetPath": "Views\\Aluno\\_Visualizar.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Shared\\_LoginPartial.cshtml",
       "TargetPath": "Views\\Shared\\_LoginPartial.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "Views\\Aluno\\_Incluir.cshtml",
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Shared\\_LayoutAntigo.cshtml",
+      "TargetPath": "Views\\Shared\\_LayoutAntigo.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Aluno\\Index.cshtml",
+      "TargetPath": "Views\\Aluno\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Aluno\\_Editar.cshtml",
+      "TargetPath": "Views\\Aluno\\_Editar.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Aluno\\_Pagar.cshtml",
+      "TargetPath": "Views\\Aluno\\_Pagar.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Financa\\_Visualizar.cshtml",
+      "TargetPath": "Views\\Financa\\_Visualizar.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Aluno\\_Ativar.cshtml",
+      "TargetPath": "Views\\Aluno\\_Ativar.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\_ViewImports.cshtml",
+      "TargetPath": "Views\\_ViewImports.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Shared\\_Layout.cshtml",
+      "TargetPath": "Views\\Shared\\_Layout.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Areas\\Identity\\Pages\\_ViewStart.cshtml",
+      "TargetPath": "Areas\\Identity\\Pages\\_ViewStart.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Shared\\_Layout1.cshtml",
+      "TargetPath": "Views\\Shared\\_Layout1.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Aluno\\_Incluir.cshtml",
       "TargetPath": "Views\\Aluno\\_Incluir.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
       "TargetPath": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "Views\\Log\\_ExibirDetalhes.cshtml",
+      "FilePath": "c:\\Users\\johna\\source\\repos\\ControleFinanceiro\\Views\\Log\\_ExibirDetalhes.cshtml",
       "TargetPath": "Views\\Log\\_ExibirDetalhes.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "Views\\Financa\\Index.cshtml",
-      "TargetPath": "Views\\Financa\\Index.cshtml",
       "FileKind": "mvc"
     }
   ],

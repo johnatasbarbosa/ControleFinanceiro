@@ -1,4 +1,5 @@
-﻿@{
+﻿@model ControleFinanceiro.Models.Aluno
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -26,6 +27,7 @@
                     <table id="grid-data" class="table table-bordered table-condensed table-hover table-striped">
                         <thead>
                             <tr>
+                                <th data-column-id="" data-formatter="status"></th>
                                 <th data-column-id="nome">Nome</th>
                                 <th data-column-id="" data-formatter="primeiroMes">@ViewBag.PrimeiroMes</th>
                                 <th data-column-id="" data-formatter="segundoMes">@ViewBag.segundoMes</th>

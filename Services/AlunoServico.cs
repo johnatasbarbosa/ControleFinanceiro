@@ -250,17 +250,28 @@ namespace ControleFinanceiro.Services
         /// <param name="tipoOrdenacao">Tipo de ordenação : asc / desc</param>
         /// <returns>Retorna apenas os dados que devem ser exibidos na página atual.
         /// </returns>
-        public DadosPaginados ListarPaginado(int pagina, int qtdLinhas, string busca, string campoOrdenacao, string tipoOrdenacao)
+        public DadosPaginados ListarPaginado(int pagina, int qtdLinhas, string busca, string campoOrdenacao, string tipoOrdenacao, Enums.Status? status, Enums.Situacao? situacao)
         {
             //Calcula o registro inicial a ser mostrado com base na página atual e a qtd de linhas a ser exibida na mesma.
             int registroInicial = (pagina - 1) * qtdLinhas;
             campoOrdenacao += tipoOrdenacao.ToUpper().Equals("DESC") ? " DESCENDING" : "";
             
             var dadosFiltrados = contexto.Alunos.Include(x => x.Meses).Where(a =>
+                ((status.Value == Enums.Status.Todos) || (status.Value == Enums.Status.Ativos && a.Ativo) || (status.Value == Enums.Status.Inativos && a.Ativo == false)) &&
+                (
+                    situacao.HasValue == false ||
+                    (situacao.Value == Enums.Situacao.Todos) || 
+                    (situacao.Value == Enums.Situacao.PagamentoEmDia && a.Meses.Any(m => m.Pago == false && m.Data.CompareTo(DateTime.Now) < 0) == false) || 
+                    (situacao.Value == Enums.Situacao.Devendo && a.Meses.Any(m => m.Pago == false && m.Data.CompareTo(DateTime.Now) < 0) == true)
+                ) &&
                 (busca == null ||
                 a.Nome.ToUpper().Contains(busca.ToUpper()))
             );
             dadosFiltrados = dadosFiltrados.OrderBy(campoOrdenacao);
+            foreach(var aluno in dadosFiltrados){
+                aluno.Meses = aluno.Meses.OrderByDescending(m => m.Data).ToList();
+                aluno.Devendo = aluno.Meses.Any(m => m.Pago == false && m.Data.CompareTo(DateTime.Now) < 0);
+            }
             
             DadosPaginados dadosPaginados = new DadosPaginados();
             dadosPaginados.Pagina = pagina;

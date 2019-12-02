@@ -35,10 +35,10 @@ namespace ControleFinanceiro.Controllers
             return View();
         }
         
-        public IActionResult Listar(GridParams parametros)
+        public IActionResult Listar(GridParams parametros, Enums.Status? status, Enums.Situacao? situacao)
         {
             CampoOrdenado campo = parametros.ObterCampoOrdenado(Request);
-            var dadosPaginados = servico.ListarPaginado(parametros.Current, parametros.rowCount, parametros.SearchPhrase, campo.Campo, campo.Ordem);
+            var dadosPaginados = servico.ListarPaginado(parametros.Current, parametros.rowCount, parametros.SearchPhrase, campo.Campo, campo.Ordem, status, situacao);
             var retorno = Json(new { current = dadosPaginados.Pagina, rowCount = dadosPaginados.QuantidadePorPagina, rows = dadosPaginados.Dados, total = dadosPaginados.Total });
             return retorno;
         }
@@ -231,7 +231,7 @@ namespace ControleFinanceiro.Controllers
                 Id = body.GetValue("id").Value<int>(),
                 Pago = body.GetValue("pago").Value<bool>(),
                 PlanoId = body.GetValue("planoId").Value<int>(),
-                ValorPromocional = body.GetValue("valorPromocional").Value<double>(),
+                ValorPromocional = body.GetValue("valorPromocional").Value<double?>(),
                 Ativo = body.GetValue("ativo").Value<bool>()
             };
             result = servico.SalvarMes(mes);

@@ -12,33 +12,56 @@
             noResults: "Nenhum Resultado Encontrado",
             refresh: "Atualizar"
         },
-        // post: function (){
-        //     var ddlTiposVisita = document.getElementById("TiposVisita");
-        //     var tipoVisitaSelecionada = ddlTiposVisita ? ddlTiposVisita.options[ddlTiposVisita.selectedIndex].value : '';
-        //     return {
-        //         tipoVisita: tipoVisitaSelecionada
-        //     };
-        // },
-        // templates: {
-        //     search:
-        //         "<div class='search form-group'>"+
-        //             "<div class='input-group'>" + 
-        //                 "<span class='icon fa input-group-addon fa-filter'></span>" + 
-        //                  enumTiposVisita + 
-        //              "</div>" +
-        //          "</div>" +
-        //          "<div class='search form-group'>" + 
-        //             "<div class='input-group'>" +
-        //                 "<span class='icon glyphicon input-group-addon glyphicon-search'></span>" +
-        //                 "<input type='text' class='search-field form-control placeholder='" + ResourcesLayout.Selecione + "'>"+
-        //             "</div>" +
-        //         "</div>"
-        //     },
+        post: function (){
+            var ddlStatus = document.getElementById("Status");
+            var status = ddlStatus ? ddlStatus.options[ddlStatus.selectedIndex].value : '';
+
+            var ddlSituacao = document.getElementById("Situacao");
+            var situacao = ddlSituacao ? ddlSituacao.options[ddlSituacao.selectedIndex].value : '';
+
+            console.log(status, situacao);
+            return {
+                status: status,
+                situacao: situacao
+            };
+        },
+        templates: {
+            search:
+                "<div class='search form-group'>"+
+                    "<div class='input-group'>" + 
+                        "<select id='Situacao' class='form-control' onchange='reloadGrid()'>"+
+                            "<option value='1'>Todos</option>"+
+                            "<option value='2'>Pagamento em dia</option>"+
+                            "<option value='3'>Devendo</option>"+
+                        "</select>" +
+                     "</div>" +
+                 "</div>" +
+                "<div class='search form-group'>"+
+                    "<div class='input-group'>" + 
+                        "<select id='Status' class='form-control' onchange='reloadGrid()'>"+
+                        "<option value='1'>Ativos</option>"+
+                        "<option value='2'>Inativos</option>"+
+                        "<option value='3'>Todos</option>"+
+                        "</select>" +
+                     "</div>" +
+                 "</div>" +
+                 "<div class='search form-group'>" + 
+                    "<div class='input-group'>" +
+                        "<span class='icon glyphicon input-group-addon glyphicon-search'></span>" +
+                        "<input type='text' class='search-field form-control placeholder='" + "Selecione" + "'>"+
+                    "</div>" +
+                "</div>"
+            },
         formatters: {
             "commands": function (column, row) {
                 return "<button type='button' title='" + "Visualizar" + "' class='btn btn-sm btn-default command-visualizar' href='javascript:void(0)' data-row-id='" + row.id + "'><span class='fa fa-search'></span></button>" +
                       "<button type='button' title='" + "Editar" + "' class='btn btn-sm btn-default command-edit' href='javascript:void(0)' data-row-id='" + row.id + "'><span class='fa fa-edit'></span></button>" +
                       "<button type='button' title='" + "Pagamentos" + "' class='btn btn-sm btn-default command-payment' href='javascript:void(0)' data-row-id='" + row.id + "'><span class='fa fa-search'></span></button>";
+            },
+            "status": function (column, row) {
+                if(row.devendo)
+                    return "<label class='bg bg-danger'>&nbsp;&nbsp;D&nbsp;&nbsp;</label>"
+                return "<label class='bg bg-success'>&nbsp;&nbsp;P&nbsp;&nbsp;</label>"
             },
             "primeiroMes": function (column, row) {
                 console.log(row);
@@ -130,4 +153,8 @@
             window.location.href = url;
         })
     });
+}
+
+function reloadGrid(){
+    $('#grid-data').bootgrid('reload');
 }

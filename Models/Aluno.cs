@@ -74,5 +74,12 @@ namespace ControleFinanceiro.Models
 
         [Display(Name = "Valor Promocional")]
         public double? ValorPromocional { get; set; }
+
+        [NotMapped]
+        public Enums.Status Status { get; set; }
+        [NotMapped]
+        public Enums.Situacao Situacao { get; set; }
+        [NotMapped]
+        public bool Devendo { get; set; }
     }
 }
