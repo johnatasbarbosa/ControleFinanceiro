@@ -28,7 +28,7 @@ namespace ControleFinanceiro.Services
         {
             try{
                 var now = DateTime.Now;
-                var alunos = contexto.Alunos.Where(x => x.Meses.Any(m => m.Data.Month == now.Month && m.Data.Year == now.Year) == false);
+                var alunos = contexto.Alunos.Where(x => x.Ativo && x.Meses.Any(m => m.Data.Month == now.Month && m.Data.Year == now.Year) == false);
                 foreach(var aluno in alunos){
                     var mes = new Mes(){
                         Data = new DateTime(DateTime.Now.Year, DateTime.Now.Month, aluno.DiaPagamento),
