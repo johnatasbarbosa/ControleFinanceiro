@@ -84,24 +84,31 @@ namespace ControleFinanceiro.Services
 
             try
             {
-                var mesDB = contexto.Meses.FirstOrDefault(x => x.Id == mes.Id);
-                if(mesDB.Pago == false && mes.Pago){
-                    mesDB.DiaPagamento = DateTime.Now;
+                if(mes.Id == 0){
+                    mes.Professor = contexto.Professores.FirstOrDefault();
+                    contexto.Meses.Add(mes);
                 }
-                if(mesDB.Pago && mes.Pago == false){
-                    mesDB.DiaPagamento = null;
+                else{                        
+                    var mesDB = contexto.Meses.FirstOrDefault(x => x.Id == mes.Id);
+                    if(mesDB.Pago == false && mes.Pago){
+                        mesDB.DiaPagamento = DateTime.Now;
+                    }
+                    if(mesDB.Pago && mes.Pago == false){
+                        mesDB.DiaPagamento = null;
+                    }
+                    mesDB.Pago = mes.Pago;
+                    mesDB.PlanoId = mes.PlanoId;
+                    mesDB.ValorPromocional = mes.ValorPromocional;
+                    if(mesDB.Ativo && mes.Ativo == false){
+                        mesDB.DiaPagamento = null;
+                        mesDB.Pago = false;
+                    }
+                    mesDB.Ativo = mes.Ativo;
+                    contexto.Entry(mesDB).State = EntityState.Modified;
                 }
-                mesDB.Pago = mes.Pago;
-                mesDB.PlanoId = mes.PlanoId;
-                mesDB.ValorPromocional = mes.ValorPromocional;
-                if(mesDB.Ativo && mes.Ativo == false){
-                    mesDB.DiaPagamento = null;
-                    mesDB.Pago = false;
-                }
-                mesDB.Ativo = mes.Ativo;
-                contexto.Entry(mesDB).State = EntityState.Modified;
                 result.Success = true;
                 result.Message = "Salvo com Sucesso";
+                result.Id = mes.Id;
                 contexto.SaveChanges();
             }
             catch(Exception e)

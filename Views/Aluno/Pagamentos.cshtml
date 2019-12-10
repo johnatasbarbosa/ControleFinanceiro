@@ -23,6 +23,9 @@
                 <h3>@Model.Nome</h3>
             </div>
             <div class="box-body">
+                <p>
+                    <button type="button" class="btn btn-primary" data-bind="click: $root.novoMes"><span class='fa fa-plus-circle'></span> Novo</button>
+                </p>
                 <div class="row" data-bind="foreach: meses">
                     <div class="col-md-1">
                         <button type="button" class="btn" data-bind="click: $root.abrirModalDadosMes, css: { 'btn-default' : ativo() == false, 'btn-danger' : ativo() == true && pago() == false, 'btn-success' : ativo() == true && pago() == true }">
@@ -36,9 +39,9 @@
     </div>
 </div>
 
-@Html.Partial("_DadosMes")
 
 @section Scripts{
+@Html.Partial("_DadosMes")
     <script src="~/js/AbrirModalNovo.js"></script>
     <script src="~/plugins/knockoutjs/knockout-3.5.0.js"></script>
 
@@ -50,6 +53,7 @@
         console.log(alunoModel);
         var planos = JSON.parse('@Json.Serialize(@ViewBag.Planos)');
         console.log(planos);
+        
     </script>
     <script src="~/js/Aluno/modeloPagamentos.js"></script>
 }

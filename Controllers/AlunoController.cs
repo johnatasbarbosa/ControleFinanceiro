@@ -230,7 +230,9 @@ namespace ControleFinanceiro.Controllers
             var mes = new Mes(){
                 Id = body.GetValue("id").Value<int>(),
                 Pago = body.GetValue("pago").Value<bool>(),
+                Data = body.GetValue("data").Value<DateTime>(),
                 PlanoId = body.GetValue("planoId").Value<int>(),
+                AlunoId = body.GetValue("alunoId").Value<int>(),
                 ValorPromocional = body.GetValue("valorPromocional").Value<double?>(),
                 Ativo = body.GetValue("ativo").Value<bool>()
             };

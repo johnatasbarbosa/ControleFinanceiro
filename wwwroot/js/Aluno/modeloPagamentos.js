@@ -10,12 +10,13 @@ function Plano(plano){
 function Mes(mes){
     var self = this;
     self.id = ko.observable(mes ? mes.id : 0);
-    self.data = ko.observable(mes ? new Date(mes.data) : new Date());
+    self.data = ko.observable(mes ? new Date(mes.data) : null);
     self.pago = ko.observable(mes ? mes.pago : false);
     self.diaPagamento = ko.observable(mes ? mes.diaPagamento : null);
     self.ativo = ko.observable(mes ? mes.ativo : false);
 
-    self.planoId = ko.observable(mes ? mes.planoId : 0);
+    self.alunoId = ko.observable(mes ? mes.alunoId : 0);
+    self.planoId = ko.observable(mes ? mes.planoId : 1);
     self.valorPromocional = ko.observable(mes ? mes.valorPromocional : null);
     self.valor = ko.computed(function(){
         var valor = "";
@@ -27,10 +28,12 @@ function Mes(mes){
     })
 
     self.nome = ko.computed(function(){
-        return meses[self.data().getMonth()];
+        if(self.data())
+            return meses[self.data().getMonth()];
     })
     self.ano = ko.computed(function(){
-        return (self.data().getYear() + 1900).toString();
+        if(self.data())
+            return (self.data().getYear() + 1900).toString();
     })
 }
 
@@ -41,8 +44,16 @@ function PagamentosViewModel(){
     self.planos = ko.observableArray([]);
 
     self.mes = ko.observable();
+    self.criandoMes = ko.observable();
+    self.novoMes = function(){
+        self.criandoMes(true);
+        self.mes(new Mes());
+        self.mes().alunoId(alunoModel.id);
+        $('#dadosMes').modal('show');
+    }
     self.abrirModalDadosMes = function(mes){
         // var index = self.meses.indexOf(pVM.mes);
+        self.criandoMes(false);
         self.mes(new Mes());
         self.mes(mes);
         $('#dadosMes').modal('show');
@@ -67,9 +78,25 @@ function PagamentosViewModel(){
         newMes.ativo = false;
         self.salvarMes(newMes);
     }
+    self.salvar = function(mes){
+        var newMes = ko.toJS(mes);
+        newMes.ativo = true;
+        newMes.data = $("#Data").val();
+        console.log(newMes);
+        var existeMes = ko.utils.arrayFirst(self.meses(), function(mes){
+            return moment(mes.data()).month() == moment(newMes.data, "DD/MM/YYYY").month() &&
+                moment(mes.data()).year() == moment(newMes.data, "DD/MM/YYYY").year();
+        });
+        newMes.data = moment(newMes.data, "DD/MM/YYYY");
+        if(existeMes){
+            toastr['error']("Já existe um mês para esta data");
+            return;
+        }
+        self.salvarMes(newMes, true);
+    }
 
     self.salvando = ko.observable();
-    self.salvarMes = function(mes){
+    self.salvarMes = function(mes, novo){
         console.log(mes.pago, mes.ativo);
         console.log(ko.toJSON(mes));
         self.salvando(true);
@@ -80,6 +107,8 @@ function PagamentosViewModel(){
             data: ko.toJSON(mes),
             success: function (result, status) {
                 if (result.success) {
+                    if(novo)
+                        location.reload();
                     toastr['success'](result.message);
                     console.log(self.mes().pago(), self.mes().ativo());
                     console.log(mes.pago, mes.ativo);
