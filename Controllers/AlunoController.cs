@@ -29,9 +29,21 @@ namespace ControleFinanceiro.Controllers
         {
             ViewBag.MesesGerados = servico.GerarMeses();
             string[] meses = new string[12]{"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
-            ViewBag.PrimeiroMes = meses[DateTime.Now.Month - 3];
-            ViewBag.SegundoMes = meses[DateTime.Now.Month - 2];
-            ViewBag.TerceiroMes = meses[DateTime.Now.Month - 1];
+            if(DateTime.Now.Month >= 3){
+                ViewBag.PrimeiroMes = meses[DateTime.Now.Month - 3];
+                ViewBag.SegundoMes = meses[DateTime.Now.Month - 2];
+                ViewBag.TerceiroMes = meses[DateTime.Now.Month - 1];
+            }
+            else if(DateTime.Now.Month == 2){
+                ViewBag.PrimeiroMes = meses[11];
+                ViewBag.SegundoMes = meses[0];
+                ViewBag.TerceiroMes = meses[1];
+            }
+            else if(DateTime.Now.Month == 1){
+                ViewBag.PrimeiroMes = meses[10];
+                ViewBag.SegundoMes = meses[11];
+                ViewBag.TerceiroMes = meses[0];
+            }
             return View();
         }
         
