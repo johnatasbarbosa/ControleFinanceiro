@@ -21,7 +21,7 @@ function configurarControles() {
             },
             "mes": function (column, row) {
                 var mes = new Date(row).getMonth();
-                return mes ? meses[mes] : "";
+                return mes != null ? meses[mes] : "";
             },
             "ano": function (column, row) {
                 return new Date(row).getUTCFullYear();

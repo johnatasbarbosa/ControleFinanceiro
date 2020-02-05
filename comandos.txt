@@ -1,0 +1,9 @@
+dotnet new mvc --auth Individual --use-local-db
+
+dotnet add package System.Linq.Dynamic.Core --version 1.0.19
+
+dotnet add package Microsoft.AspNetCore.Mvc.NewtonsoftJson --version 3.0.0
+
+dotnet ef migrations add --context ApplicationDbContext Add_Tabelas_do_Sistema
+
+dotnet ef database update --context ApplicationDbContext

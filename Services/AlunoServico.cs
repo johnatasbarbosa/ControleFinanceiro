@@ -30,6 +30,8 @@ namespace ControleFinanceiro.Services
                 var now = DateTime.Now;
                 var alunos = contexto.Alunos.Where(x => x.Ativo && x.Meses.Any(m => m.Data.Month == now.Month && m.Data.Year == now.Year) == false);
                 foreach(var aluno in alunos){
+                    if(aluno.DiaPagamento > DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month))
+                        aluno.DiaPagamento = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
                     var mes = new Mes(){
                         Data = new DateTime(DateTime.Now.Year, DateTime.Now.Month, aluno.DiaPagamento),
                         AlunoId = aluno.Id,
@@ -129,8 +131,11 @@ namespace ControleFinanceiro.Services
                 if (aluno.Id == 0)
                 {                    
                     aluno.ProfessorId = contexto.Professores.Select(p => p.Id).FirstOrDefault();
+                    var diaPagamento = aluno.DiaPagamento;
+                    if(diaPagamento > DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month))
+                        diaPagamento = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
                     var mes = new Mes(){
-                        Data = new DateTime(DateTime.Now.Year, DateTime.Now.Month, aluno.DiaPagamento),
+                        Data = new DateTime(DateTime.Now.Year, DateTime.Now.Month, diaPagamento),
                         PlanoId = aluno.PlanoId,
                         ProfessorId = aluno.ProfessorId,
                         ValorPromocional = aluno.ValorPromocional
